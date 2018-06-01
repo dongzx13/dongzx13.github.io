@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.">
+<meta name="description" content="AdaBoost, is short for adaptive boosting. Boosting can give good results even if the base classifiers have a performance that is only slightly better than random, and hence sometimes the base classifi">
 <meta name="keywords" content="Machine Learning,Boost">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AdaBoost">
 <meta property="og:url" content="http://yoursite.com/2018/06/01/hello-world/index.html">
 <meta property="og:site_name" content="Zexian&#39;s Blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.">
+<meta property="og:description" content="AdaBoost, is short for adaptive boosting. Boosting can give good results even if the base classifiers have a performance that is only slightly better than random, and hence sometimes the base classifi">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-31T17:16:09.114Z">
+<meta property="og:updated_time" content="2018-06-01T15:15:18.238Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AdaBoost">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.">
+<meta name="twitter:description" content="AdaBoost, is short for adaptive boosting. Boosting can give good results even if the base classifiers have a performance that is only slightly better than random, and hence sometimes the base classifi">
 
 
 
@@ -360,7 +360,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-01T01:16:09+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-01T09:28:32+08:00">
                 2018-06-01
               </time>
             
@@ -430,18 +430,37 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+        <p>AdaBoost, is short for <em>adaptive boosting</em>. Boosting can give good results even if the base classifiers have a performance that is only slightly better than random, and hence sometimes the base classifiers are known as weak learners. Originally designed for solving classification problems, boosting can also be extended to regression.</p>
 <a id="more"></a> 
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>lalala</p>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
+<h2 id="Adaboost算法流程"><a href="#Adaboost算法流程" class="headerlink" title="Adaboost算法流程"></a>Adaboost算法流程</h2><ol>
+<li><p>初始化每一个数据的权重系数 <code>weighting coefficients</code>  {$w_n$}:  $w_n^{(1)}$ = 1/N for n = 1,…,N.</p>
+</li>
+<li><p>For m = 1,…,M:</p>
+<ol>
+<li>在训练数据上训练 一个分类器<code>classifier</code> $y_m(x)$ ,使得加权的错误率最低:<br>$$<br>J_m = \sum_{n=1}^Nw_n^{(m)}I(y_m( {\textbf x_n})\neq t_n)<br>$$</li>
+</ol>
+</li>
+</ol>
+<p>   ​    其中$I(y_m({\textbf x_n})\neq t_n)$是指示函数,当$y_m({\textbf x_n})\neq t_n$时,这个函数为1,其余的时候为0.</p>
+<ol start="2">
+<li><p>计算下面的式子:<br>$$<br>\epsilon_{m}=\frac{\sum_{n=1}^{N}w_{n}^{(m)}I(y_{m}(\textbf x_n)\ne t_{n})}{\sum_{n=1}^{N}w_{n}^{(m)}}<br>$$<br>利用上面的式子去计算$\alpha_m​$:<br>$$<br>\alpha_{m}=ln\{\frac{1-\epsilon_{m}}{\epsilon_{m}}\}<br>$$</p>
+</li>
+<li><p>更新权重系数<br>$$<br>w_{n}^{(m+1)}=w_{n}^{(m)}exp[ \alpha_{m}I(y_{m}(\textbf x_n)\neq t_{n}) ]<br>$$</p>
+</li>
+</ol>
+<ol start="3">
+<li>利用最后的模型做出预测:<br>$$<br>Y_M(\textbf {x}) = sign(\sum_{m=1}^M\alpha_my_m(\textbf x))<br>$$</li>
+</ol>
+<h2 id="理论解释—对指数误差函数的顺序最小化"><a href="#理论解释—对指数误差函数的顺序最小化" class="headerlink" title="理论解释—对指数误差函数的顺序最小化"></a>理论解释—对指数误差函数的顺序最小化</h2><p>指数误差函数:<br>$$<br>E=\sum_{n=1}^{N}exp[ -t_{n}f_{m}(\textbf x_n) ]<br>$$<br>       其中$f_{m}(\textbf x)$可以看作是基础分类器$y_{l}(\textbf x)$的线性组合:<br>$$<br>f_{m}(\textbf x)=\frac{1}{2}\sum_{l=1}^{m}\alpha_{l}y_{l}(\textbf x)<br>$$</p>
+<p>​    且$t_n\in\{ -1,1\}$是训练的目标值.我们的目标是根据权重系数$\alpha_{l}$ 以及$y_l(\textbf x)$ 来最小化指数误差函数E.</p>
+<p>在这里我们假定基础的分类器$y_{1}(\textbf{x}), …, y_{m-1}(\textbf{x})$ 以及他们的系数$\alpha_{1}, …, \alpha_{m-1}$是固定的,我们不对误差函数做全局的最小化,而是仅仅针对$\alpha_{m}$ and $y_{m}(\textbf{x})$做最小化.</p>
+<p>因此我们重写这个误差函数:<br>$$<br>E =\sum_{n=1}^{N}exp\{-t_{n}f_{m-1}(\textbf x_n)-\frac{1}{2}t_{n}\alpha_{m}y_{m}(\textbf x_n)\} \<br>=\sum_{n=1}^{N}w_{n}^{(m)}exp\{-\frac{1}{2}t_{n}\alpha_{m}y_{m}(\textbf x_n)\}<br>$$<br>其中在我们仅对$\alpha_{m}$ and $y_{m}(\textbf{x})$ 做最优化, 所以$w_{n}^{(m)}=exp\{-t_{n}f_{m-1}(\textbf x_n)\}$可以被认为是常数.  如果我们用$\Gamma_{m}$代表被 $y_{m}(\textbf{x})$ 分对的样本点, $\mathcal M_m$ 代表分错的样本点,那么我们可以把错误方差能写成如下的形式<br>$$<br>\begin{align}<br>E &amp; = e^{-\alpha_{m}/2}\sum_{n\in \Gamma_{m}}w_{n}^{(m)}+e^{\alpha_{m}/2}\sum_{n\in \mathcal M_m}w_{n}^{(m)} \\<br>&amp; = e^{-\alpha_m/2}\sum_{n\in \Gamma_{m}}w_{n}^{(m)}+e^{-\alpha_{m}/2}\sum_{n\in \mathcal M_m}w_{n}^{(m)}+(e^{\alpha_{m}/2}-e^{-\alpha_{m}/2})\sum_{n\in \mathcal M_m}w_{n}^{(m)} \\<br>&amp; = e^{-\alpha_{m}/2}\sum_{n=1}^Nw_{n}^{(m)}+(e^{\alpha_{m}/2}-e^{-\alpha_{m}/2})\sum_{n=1}^Nw_{n}^{(m)}I(y_{m}(\textbf x_n)\neq t_{n})<br>\end{align}<br>$$<br>当我们对$y_{m}(\textbf{x})$求导的时候,第一项是常数,所以对错误方差求最小值就相当于在adaboost算法中最小化$J_m$ ,因为前面的系数不会影响最小值的位置.相似的,我们对$\alpha_{m}$求导,<br>$$<br>\frac{\partial E}{\partial \alpha_{m}}  = -\frac{1}{2}e^{-\alpha_{m}/2}\sum_{n=1}^Nw_{n}^{(m)}+\frac{1}{2}(e^{\alpha_{m}/2}+e^{-\alpha_{m}/2})\sum_{n=1}^Nw_{n}^{(m)}I(y_{m}(\textbf x_n))\neq t_{n})=0<br>$$</p>
+<p>$$<br>    \epsilon_{m}=\frac{\sum_{n=1}^{N}w_{n}^{(m)}I(y_{m}(\textbf x_n)\neq t_{n})}{\sum_{n=1}^{N}w_{n}^{(m)}} = \frac{e^{-\alpha_{m}/2}}{e^{\alpha_{m}/2}+e^{-\alpha_{m}/2}}<br>$$</p>
+<p>$$<br>\frac{1}{\epsilon_{m}}= \frac{e^{\alpha_{m}/2}+e^{-\alpha_{m}/2}}{e^{-\alpha_{m}/2}}=1+e^{\alpha_{m}}<br>$$</p>
+<p>$$<br>\alpha_{m}=ln(\frac{1}{\epsilon_{m}}-1)=ln((1-\epsilon_{m})/\epsilon_{m})<br>$$</p>
+<p>与adaboost算法中一致.</p>
+<p>由于$w_{n}^{(m)}=exp\{-t_{n}f_{m-1}(\textbf x_n)\}$,所以<br>$$<br>w_{n}^{(m+1)}=w_{n}^{(m)}exp\{-\frac{1}{2}t_{n}\alpha_{m}y_{m}(\textbf x_n)\}<br>$$<br>由于<br>$$<br>t_{n}y_{m}(\textbf x_n) = 1 - 2I(y_{m}(\textbf x_n)\neq t_{n})<br>$$<br>所以<br>$$<br>\begin{align}<br>    w_{n}^{(m+1)}&amp;=w_{n}^{(m)}exp\{-\frac{1}{2}t_{n}\alpha_{m}y_{m}(\textbf x_n)\} \\<br>    &amp;= w_{n}^{(m)}exp\{-\frac{1}{2}\alpha_{m}(1 - 2I(y_{m}(\text x_n)\neq t_{n}) \\<br>    &amp;=w_{n}^{(m)}exp\{-\frac{1}{2}\alpha_{m}\}exp\{\alpha_{m}I(y_{m}(\textbf x_n)\neq t_{n})<br>\}<br>\end{align}<br>$$<br>因为$exp\{-\frac{1}{2}\alpha_{m}\}$与n无关,每次更新的时候都是个常数,所以可以删除.<br>$$<br>w_{n}^{(m+1)}=w_{n}^{(m)}exp\{\alpha_{m}I(y_{m}(\textbf x_n)\neq t_{n})\}<br>$$<br>根据$f_{m}(\textbf x)=\frac{1}{2}\sum_{l=1}^{m}\alpha_{l}y_{l}(\textbf x)$的符号,我们可以得到与adaboost一致的结果,系数$\frac{1}{2}$可以舍掉.</p>
+<h2 id="Adaboost算法实践"><a href="#Adaboost算法实践" class="headerlink" title="Adaboost算法实践"></a>Adaboost算法实践</h2>
       
     </div>
     
@@ -469,6 +488,22 @@
       
       
 
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/01/hexo-note/" rel="prev" title="hexo-note">
+                hexo-note <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
 
       
@@ -553,7 +588,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -564,7 +599,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -575,7 +610,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -624,7 +659,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Adaboost算法流程"><span class="nav-number">1.</span> <span class="nav-text">Adaboost算法流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#理论解释—对指数误差函数的顺序最小化"><span class="nav-number">2.</span> <span class="nav-text">理论解释—对指数误差函数的顺序最小化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adaboost算法实践"><span class="nav-number">3.</span> <span class="nav-text">Adaboost算法实践</span></a></li></ol></div>
             
 
           </div>
