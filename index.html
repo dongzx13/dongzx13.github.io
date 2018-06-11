@@ -514,67 +514,14 @@
 
       
         
-          
-            <a id="more"></a> 
-<p>#准备数据集 </p>
-<ol>
-<li><p>将数据集转化为pascal voc的recognition格式</p>
-<blockquote>
-<p>代码: prepare_img</p>
-</blockquote>
-<ol>
-<li><p>Annotations  <code>标注</code></p>
-<ol>
-<li>0368.xml</li>
-<li>…</li>
-</ol>
-</li>
-<li><p>ImageSets  </p>
-<ol>
-<li>Layout  </li>
-<li>Main  <ol>
-<li>trainval.txt<code>这个文件中的放的是图像文件的名字去掉&lt;.jpg&gt;</code></li>
-</ol>
-</li>
-<li>Segmentation</li>
-</ol>
-</li>
-<li><p>JPEGImages  <code>图像文件</code></p>
-<ol>
-<li><p>0368.jpg</p>
-<p>…</p>
-</li>
-</ol>
-</li>
-<li><p>SegmentationClass  <code>用来分割</code></p>
-</li>
-<li><p>SegmentationObject <code>用来分割</code></p>
-</li>
-</ol>
-</li>
-<li><p>如何使用这个数据集</p>
-<blockquote>
-<p>代码: datasets</p>
-</blockquote>
-<ol>
-<li><p>ds_utils.py  </p>
-<p>代码解读:</p>
-</li>
-<li><p>factory.py  </p>
-<p>工厂类</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">lambda</span> split=split, year=year: pascal_voc(split, year)</span><br></pre></td></tr></table></figure>
-<p>解读: <a href="https://www.zhihu.com/question/35394058/answer/112104964" target="_blank" rel="noopener">lambda 函数</a></p>
-</li>
-<li><p>imdb.py  </p>
-<p><code>assert</code>语句用来声明某个条件是真的</p>
-</li>
-<li><p>pascal_voc.py</p>
-</li>
-</ol>
-</li>
-</ol>
-
-          
+          <p>#准备数据集<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/06/09/ctpn/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
