@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Meachine learning" />
+  <meta name="keywords" content="realsense," />
 
 
 
@@ -79,16 +79,20 @@
 
 
 
-<meta name="description" content="I can do all things!">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Zexian&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/categories/Machine-Learning/index.html">
+<meta name="description" content="使用RealSense进行手势识别">
+<meta name="keywords" content="realsense">
+<meta property="og:type" content="article">
+<meta property="og:title" content="handDetect">
+<meta property="og:url" content="http://yoursite.com/2018/07/27/handDetect/index.html">
 <meta property="og:site_name" content="Zexian&#39;s Blog">
-<meta property="og:description" content="I can do all things!">
+<meta property="og:description" content="使用RealSense进行手势识别">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/depimg.png">
+<meta property="og:updated_time" content="2018-07-27T23:48:51.784Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Zexian&#39;s Blog">
-<meta name="twitter:description" content="I can do all things!">
+<meta name="twitter:title" content="handDetect">
+<meta name="twitter:description" content="使用RealSense进行手势识别">
+<meta name="twitter:image" content="http://yoursite.com/images/depimg.png">
 
 
 
@@ -118,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/categories/Machine-Learning/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/07/27/handDetect/"/>
 
 
 
 
 
-  <title>Category: Machine Learning | Zexian's Blog</title>
+  <title>handDetect | Zexian's Blog</title>
   
 
 
@@ -153,7 +157,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -285,55 +289,207 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>Machine Learning<small>Category</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/27/handDetect/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zexian Dong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/maxresdefault.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zexian's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/06/02/adaboost/" itemprop="url">
-              
-                <span itemprop="name">AdaBoost</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">handDetect</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-06-02T22:19:57-07:00"
-              content="2018-06-02" >
-          06-02
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-27T16:24:23-07:00">
+                2018-07-27
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/handDetect/" itemprop="url" rel="index">
+                    <span itemprop="name">handDetect</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/27/handDetect/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/07/27/handDetect/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>使用RealSense进行手势识别</p>
+<a id="more"></a> 
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><ol>
+<li><p>Compute a depth map</p>
+<p>The depth map is constructed by analyzing a speckle pattern of infrared laser light 具体建立结构光的原理是受专利保护的</p>
+<ul>
+<li><p>Structured light general principle: project a known pattern onto the scene and infer depth from the deformation of that pattern</p>
+</li>
+<li><p>The Kinect combines structured light with two classic computer vision techniques: depth from focus, and depth from stereo</p>
+<ul>
+<li><p>Depth from focus uses the principle that stuff that is more blurry is further away</p>
+<p>越远的物体就会更模糊</p>
+<p><img src="/images/depimg.png" alt=""></p>
+<p>The astigmatic lens causes a projected circle to become an ellipse whose orientation depends on depth</p>
+<p>像散透镜使投影圆变成椭圆，其取向取决于深度</p>
+</li>
+</ul>
+<ul>
+<li>Depth from stereo uses parallax</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>2.infer body postion </p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/realsense/" rel="tag"># realsense</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/15/faster-rcnn/" rel="next" title="faster-rcnn">
+                <i class="fa fa-chevron-left"></i> faster-rcnn
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/30/Const-C/" rel="prev" title="Const_C++">
+                Const_C++ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -341,6 +497,17 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
 
         </div>
         
@@ -361,8 +528,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -442,6 +618,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#原理"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -592,6 +784,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -638,6 +834,30 @@
 
     
 
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'dongzx13',
+            repo: 'gitment-comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '6f54836e7a6de5628a4763894379fce5e4f036f6',
+            
+                client_id: '8eeb5a382fa5cf12fbd6'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
     
 
 

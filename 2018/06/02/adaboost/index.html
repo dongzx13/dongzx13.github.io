@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Machine Learning,Boost," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="AdaBoost, is short for adaptive boosting. Boosting can give good results even if the base classifiers have a performance that is only slightly better than random, and hence sometimes the base classifi">
+<meta name="keywords" content="Machine Learning,Boost">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AdaBoost">
+<meta property="og:url" content="http://yoursite.com/2018/06/02/adaboost/index.html">
+<meta property="og:site_name" content="Zexian&#39;s Blog">
+<meta property="og:description" content="AdaBoost, is short for adaptive boosting. Boosting can give good results even if the base classifiers have a performance that is only slightly better than random, and hence sometimes the base classifi">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/strump.png">
+<meta property="og:updated_time" content="2018-06-03T10:23:36.222Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AdaBoost">
+<meta name="twitter:description" content="AdaBoost, is short for adaptive boosting. Boosting can give good results even if the base classifiers have a performance that is only slightly better than random, and hence sometimes the base classifi">
+<meta name="twitter:image" content="http://yoursite.com/images/strump.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '6JPOT7DAJ0',
+      apiKey: '4a75dd168d4390da09b2d9bc533ca876',
+      indexName: 'test_zexian',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/02/adaboost/"/>
+
+
+
+
+
+  <title>AdaBoost | Zexian's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e89534a89f31a680c764f69e9f9fac89";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zexian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/02/adaboost/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zexian Dong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/maxresdefault.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zexian's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">AdaBoost</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-02T22:19:57-07:00">
+                2018-06-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/02/adaboost/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/06/02/adaboost/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>AdaBoost, is short for <em>adaptive boosting</em>. Boosting can give good results even if the base classifiers have a performance that is only slightly better than random, and hence sometimes the base classifiers are known as weak learners. Originally designed for solving classification problems, boosting can also be extended to regression.</p>
+<a id="more"></a> 
+<h2 id="Adaboost算法流程"><a href="#Adaboost算法流程" class="headerlink" title="Adaboost算法流程"></a>Adaboost算法流程</h2><ol>
+<li><p>初始化每一个数据的权重系数 <code>weighting coefficients</code>  {$w_n$}:  $w_n^{(1)}$ = 1/N for n = 1,…,N.</p>
+</li>
+<li><p>For m = 1,…,M:</p>
+<ol>
+<li>在训练数据上训练 一个分类器<code>classifier</code> $y_m(x)$ ,使得加权的错误率最低:<br>$$<br>J_m = \sum_{n=1}^Nw_n^{(m)}I(y_m( {\textbf x_n})\neq t_n)<br>$$</li>
+</ol>
+</li>
+</ol>
+<p>   ​    其中$I(y_m({\textbf x_n})\neq t_n)$是指示函数,当$y_m({\textbf x_n})\neq t_n$时,这个函数为1,其余的时候为0.</p>
+<ol start="2">
+<li><p>计算下面的式子:<br>$$<br>\epsilon_{m}=\frac{\sum_{n=1}^{N}w_{n}^{(m)}I(y_{m}(\textbf x_n)\ne t_{n})}{\sum_{n=1}^{N}w_{n}^{(m)}}<br>$$<br>利用上面的式子去计算$\alpha_m​$:<br>$$<br>\alpha_{m}=ln\{\frac{1-\epsilon_{m}}{\epsilon_{m}}\}<br>$$</p>
+</li>
+<li><p>更新权重系数<br>$$<br>w_{n}^{(m+1)}=w_{n}^{(m)}exp[ \alpha_{m}I(y_{m}(\textbf x_n)\neq t_{n}) ]<br>$$</p>
+</li>
+</ol>
+<ol start="3">
+<li>利用最后的模型做出预测:<br>$$<br>Y_M(\textbf {x}) = sign(\sum_{m=1}^M\alpha_my_m(\textbf x))<br>$$</li>
+</ol>
+<h2 id="理论解释—对指数误差函数的顺序最小化"><a href="#理论解释—对指数误差函数的顺序最小化" class="headerlink" title="理论解释—对指数误差函数的顺序最小化"></a>理论解释—对指数误差函数的顺序最小化</h2><p>指数误差函数:<br>$$<br>E=\sum_{n=1}^{N}exp[ -t_{n}f_{m}(\textbf x_n) ]<br>$$<br>       其中$f_{m}(\textbf x)$可以看作是基础分类器$y_{l}(\textbf x)$的线性组合:<br>$$<br>f_{m}(\textbf x)=\frac{1}{2}\sum_{l=1}^{m}\alpha_{l}y_{l}(\textbf x)<br>$$</p>
+<p>​    且$t_n\in\{ -1,1\}$是训练的目标值.我们的目标是根据权重系数$\alpha_{l}$ 以及$y_l(\textbf x)$ 来最小化指数误差函数E.</p>
+<p>在这里我们假定基础的分类器$y_{1}(\textbf{x}), …, y_{m-1}(\textbf{x})$ 以及他们的系数$\alpha_{1}, …, \alpha_{m-1}$是固定的,我们不对误差函数做全局的最小化,而是仅仅针对$\alpha_{m}$ and $y_{m}(\textbf{x})$做最小化.</p>
+<p>因此我们重写这个误差函数:<br>$$<br>E =\sum_{n=1}^{N}exp\{-t_{n}f_{m-1}(\textbf x_n)-\frac{1}{2}t_{n}\alpha_{m}y_{m}(\textbf x_n)\} \<br>=\sum_{n=1}^{N}w_{n}^{(m)}exp\{-\frac{1}{2}t_{n}\alpha_{m}y_{m}(\textbf x_n)\}<br>$$<br>其中在我们仅对$\alpha_{m}$ and $y_{m}(\textbf{x})$ 做最优化, 所以$w_{n}^{(m)}=exp\{-t_{n}f_{m-1}(\textbf x_n)\}$可以被认为是常数.  如果我们用$\Gamma_{m}$代表被 $y_{m}(\textbf{x})$ 分对的样本点, $\mathcal M_m$ 代表分错的样本点,那么我们可以把错误方差能写成如下的形式<br>$$<br>\begin{align}<br>E &amp; = e^{-\alpha_{m}/2}\sum_{n\in \Gamma_{m}}w_{n}^{(m)}+e^{\alpha_{m}/2}\sum_{n\in \mathcal M_m}w_{n}^{(m)} \\<br>&amp; = e^{-\alpha_m/2}\sum_{n\in \Gamma_{m}}w_{n}^{(m)}+e^{-\alpha_{m}/2}\sum_{n\in \mathcal M_m}w_{n}^{(m)}+(e^{\alpha_{m}/2}-e^{-\alpha_{m}/2})\sum_{n\in \mathcal M_m}w_{n}^{(m)} \\<br>&amp; = e^{-\alpha_{m}/2}\sum_{n=1}^Nw_{n}^{(m)}+(e^{\alpha_{m}/2}-e^{-\alpha_{m}/2})\sum_{n=1}^Nw_{n}^{(m)}I(y_{m}(\textbf x_n)\neq t_{n})<br>\end{align}<br>$$<br>当我们对$y_{m}(\textbf{x})$求导的时候,第一项是常数,所以对错误方差求最小值就相当于在adaboost算法中最小化$J_m$ ,因为前面的系数不会影响最小值的位置.相似的,我们对$\alpha_{m}$求导,<br>$$<br>\frac{\partial E}{\partial \alpha_{m}}  = -\frac{1}{2}e^{-\alpha_{m}/2}\sum_{n=1}^Nw_{n}^{(m)}+\frac{1}{2}(e^{\alpha_{m}/2}+e^{-\alpha_{m}/2})\sum_{n=1}^Nw_{n}^{(m)}I(y_{m}(\textbf x_n))\neq t_{n})=0<br>$$</p>
+<p>$$<br>    \epsilon_{m}=\frac{\sum_{n=1}^{N}w_{n}^{(m)}I(y_{m}(\textbf x_n)\neq t_{n})}{\sum_{n=1}^{N}w_{n}^{(m)}} = \frac{e^{-\alpha_{m}/2}}{e^{\alpha_{m}/2}+e^{-\alpha_{m}/2}}<br>$$</p>
+<p>$$<br>\frac{1}{\epsilon_{m}}= \frac{e^{\alpha_{m}/2}+e^{-\alpha_{m}/2}}{e^{-\alpha_{m}/2}}=1+e^{\alpha_{m}}<br>$$</p>
+<p>$$<br>\alpha_{m}=ln(\frac{1}{\epsilon_{m}}-1)=ln((1-\epsilon_{m})/\epsilon_{m})<br>$$</p>
+<p>与adaboost算法中一致.</p>
+<p>由于$w_{n}^{(m)}=exp\{-t_{n}f_{m-1}(\textbf x_n)\}$,所以<br>$$<br>w_{n}^{(m+1)}=w_{n}^{(m)}exp\{-\frac{1}{2}t_{n}\alpha_{m}y_{m}(\textbf x_n)\}<br>$$<br>由于<br>$$<br>t_{n}y_{m}(\textbf x_n) = 1 - 2I(y_{m}(\textbf x_n)\neq t_{n})<br>$$<br>所以<br>$$<br>\begin{align}<br>    w_{n}^{(m+1)}&amp;=w_{n}^{(m)}exp\{-\frac{1}{2}t_{n}\alpha_{m}y_{m}(\textbf x_n)\} \\<br>    &amp;= w_{n}^{(m)}exp\{-\frac{1}{2}\alpha_{m}(1 - 2I(y_{m}(\text x_n)\neq t_{n}) \\<br>    &amp;=w_{n}^{(m)}exp\{-\frac{1}{2}\alpha_{m}\}exp\{\alpha_{m}I(y_{m}(\textbf x_n)\neq t_{n})<br>\}<br>\end{align}<br>$$<br>因为$exp\{-\frac{1}{2}\alpha_{m}\}$与n无关,每次更新的时候都是个常数,所以可以删除.<br>$$<br>w_{n}^{(m+1)}=w_{n}^{(m)}exp\{\alpha_{m}I(y_{m}(\textbf x_n)\neq t_{n})\}<br>$$<br>根据$f_{m}(\textbf x)=\frac{1}{2}\sum_{l=1}^{m}\alpha_{l}y_{l}(\textbf x)$的符号,我们可以得到与adaboost一致的结果,系数$\frac{1}{2}$可以舍掉.</p>
+<h2 id="基础Adaboost算法实践"><a href="#基础Adaboost算法实践" class="headerlink" title="基础Adaboost算法实践"></a>基础Adaboost算法实践</h2><ol>
+<li><p>data $X \in \mathbb{R}^{n\times p}$ label $y\in\{-1, +1\}^{n}$</p>
+</li>
+<li><p>weak learner 是 decision stump.</p>
+<p><img src="/images/strump.png" alt=""></p>
+<p>$a\in \mathbb{R}$, $j\in \{1, …, p\}$, $d\in \{-1, +1\}$. 其中 $\textbf{x}\in \mathbb{R}^{p}$ 是个向量,$x_{j}$ 是第$j$个元素.</p>
+<p>数据地址:<a href="https://github.com/dongzx13/adaboost" target="_blank" rel="noopener">ada_data.mat</a></p>
+</li>
+</ol>
+<ul>
+<li><p>我们有1000个训练数据,每一个训练数据有25个特征,以及相应的一个label.</p>
+</li>
+<li><p>首先初始化weight,$\{\textbf x_i, y_i, w_i\}_{i=1}^n, w_i \geq 0,\sum_{i=1}^nw_i=1$</p>
+</li>
+<li><p>然后我们在 decision_stump.m 中返回decision stump的参数,这个参数是最小化加权的错误率$l(a^{\star}, d^{\star}, j^{\star})=min_{a, d, j}l(a, d, j)=min_{a, d, j}\sum_{i=1}^{n}w_{i}1\{h_{a, d, j}(\textbf x_i)\neq y_{i}\}$.</p>
+ <figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[k, a, d]</span> = <span class="title">decision_stump</span><span class="params">(X, y, w)</span></span></span><br><span class="line"><span class="comment">% decision_stump returns a rule ...</span></span><br><span class="line"><span class="comment">% h(x) = d if x(k) ‚, ‚ otherwise,</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">% Input</span></span><br><span class="line"><span class="comment">%     X : n * p matrix, each row a sample</span></span><br><span class="line"><span class="comment">%     y : n * 1 vector, each row a label</span></span><br><span class="line"><span class="comment">%     w : n * 1 vector, each row a weight</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">% Output</span></span><br><span class="line"><span class="comment">%     k : the optimal dimension</span></span><br><span class="line"><span class="comment">%     a : the optimal threshold</span></span><br><span class="line"><span class="comment">%     d : the optimal d, 1 or -1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% total time complexity required to be O(p*n*logn) or less</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%%% Your Code Here %%%</span></span><br><span class="line">[m,n] = <span class="built_in">size</span>(X);</span><br><span class="line">minerror = <span class="built_in">inf</span>;</span><br><span class="line">minerror_a = <span class="number">0</span>;</span><br><span class="line">minerror_j = <span class="number">-1</span>;</span><br><span class="line">minerror_d = <span class="number">0</span>;</span><br><span class="line">w = w';</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span> = <span class="number">1</span>:n</span><br><span class="line">    comp = <span class="built_in">repmat</span>(X(:,<span class="built_in">i</span>),<span class="number">1</span>,m)';</span><br><span class="line">    ori_rep = <span class="built_in">repmat</span>(X(:,<span class="built_in">i</span>),<span class="number">1</span>,m);</span><br><span class="line">    result_gt = double(<span class="built_in">ones</span>(m,m));</span><br><span class="line">    result_gt((ori_rep - comp)&gt;=<span class="number">0</span>) = <span class="number">-1.0</span>;</span><br><span class="line">    label_gt = <span class="built_in">repmat</span>(y,<span class="number">1</span>,m);</span><br><span class="line">    [min_value_gt,argmin_gt] = min(w*(result_gt ~= label_gt));</span><br><span class="line">    result_lt = double(<span class="built_in">ones</span>(m,m));</span><br><span class="line">    result_lt((ori_rep - comp)&lt;=<span class="number">0</span>) = <span class="number">-1.0</span>;</span><br><span class="line">    label_lt = <span class="built_in">repmat</span>(y,<span class="number">1</span>,m);</span><br><span class="line">    [min_value_lt,argmin_lt] = min(w*(result_lt ~= label_lt));</span><br><span class="line">    <span class="keyword">if</span> min_value_lt &lt; min_value_gt</span><br><span class="line">        final_error = min_value_lt;</span><br><span class="line">        final_a = X(argmin_lt,<span class="built_in">i</span>);</span><br><span class="line">        final_d =  <span class="number">-1.0</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        final_error = min_value_gt;</span><br><span class="line">        final_a = X(argmin_gt,<span class="built_in">i</span>);</span><br><span class="line">        final_d =  <span class="number">1.0</span>;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">if</span> minerror &gt; final_error</span><br><span class="line">        minerror = final_error</span><br><span class="line">        minerror_a = final_a;</span><br><span class="line">        minerror_d = final_d;</span><br><span class="line">        minerror_j = <span class="built_in">i</span>;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">k = minerror_j;</span><br><span class="line">a = minerror_a;</span><br><span class="line">d = minerror_d;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>decision_stump_error.m update_weights.m adaboost_error.m adaboost.m</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">w_update</span> = <span class="title">update_weights</span><span class="params">(X, y, k, a, d, w, alpha)</span></span></span><br><span class="line"><span class="comment">% update_weights update the weights with the recent classifier</span></span><br><span class="line"><span class="comment">% </span></span><br><span class="line"><span class="comment">% Input</span></span><br><span class="line"><span class="comment">%     X        : n * p matrix, each row a sample</span></span><br><span class="line"><span class="comment">%     y        : n * 1 vector, each row a label</span></span><br><span class="line"><span class="comment">%     k        : selected dimension of features</span></span><br><span class="line"><span class="comment">%     a        : selected threshold for feature-k</span></span><br><span class="line"><span class="comment">%     d        : 1 or -1</span></span><br><span class="line"><span class="comment">%     w        : n * 1 vector, old weights</span></span><br><span class="line"><span class="comment">%     alpha    : weights of the classifiers</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">% Output</span></span><br><span class="line"><span class="comment">%     w_update : n * 1 vector, the updated weights</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%%% Your Code Here %%%</span></span><br><span class="line"></span><br><span class="line">p = ((X(:, k) &lt;= a) - <span class="number">0.5</span>) * <span class="number">2</span> * d;</span><br><span class="line">result = p;</span><br><span class="line">w_update = w.*<span class="built_in">exp</span>(alpha * (result ~= y));</span><br><span class="line"><span class="comment">%% 注意要normalization 保证公式分母是一样的</span></span><br><span class="line">w_update = w_update/sum(w_update);</span><br><span class="line"></span><br><span class="line"><span class="comment">%%% Your code Here %%%</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          
+            <a href="/tags/Boost/" rel="tag"># Boost</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/01/hexo-note/" rel="next" title="hexo-note">
+                <i class="fa fa-chevron-left"></i> hexo-note
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/09/ctpn/" rel="prev" title="ctpn">
+                ctpn <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/maxresdefault.jpg"
+                alt="Zexian Dong" />
+            
+              <p class="site-author-name" itemprop="name">Zexian Dong</p>
+              <p class="site-description motion-element" itemprop="description">I can do all things!</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/dongzx13" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:dzx07522@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Adaboost算法流程"><span class="nav-number">1.</span> <span class="nav-text">Adaboost算法流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#理论解释—对指数误差函数的顺序最小化"><span class="nav-number">2.</span> <span class="nav-text">理论解释—对指数误差函数的顺序最小化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础Adaboost算法实践"><span class="nav-number">3.</span> <span class="nav-text">基础Adaboost算法实践</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zexian Dong</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'dongzx13',
+            repo: 'gitment-comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '6f54836e7a6de5628a4763894379fce5e4f036f6',
+            
+                client_id: '8eeb5a382fa5cf12fbd6'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
