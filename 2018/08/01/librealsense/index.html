@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="realsense open_ark," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Depth from StereoUsing this tutorial you will learn the basics of stereoscopic vision, including block-matching, calibration and rectification, depth from stereo using opencv, passive vs. active stere">
+<meta name="keywords" content="realsense open_ark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="librealsense">
+<meta property="og:url" content="http://yoursite.com/2018/08/01/librealsense/index.html">
+<meta property="og:site_name" content="Zexian&#39;s Blog">
+<meta property="og:description" content="Depth from StereoUsing this tutorial you will learn the basics of stereoscopic vision, including block-matching, calibration and rectification, depth from stereo using opencv, passive vs. active stere">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://raw.githubusercontent.com/wiki/dorodnic/librealsense/stereo-ssd.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/wiki/dorodnic/librealsense/rectified.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/wiki/dorodnic/librealsense/ssd-depth.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/wiki/dorodnic/librealsense/naive-depth.gif">
+<meta property="og:updated_time" content="2018-08-02T19:57:23.688Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="librealsense">
+<meta name="twitter:description" content="Depth from StereoUsing this tutorial you will learn the basics of stereoscopic vision, including block-matching, calibration and rectification, depth from stereo using opencv, passive vs. active stere">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/wiki/dorodnic/librealsense/stereo-ssd.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '6JPOT7DAJ0',
+      apiKey: '4a75dd168d4390da09b2d9bc533ca876',
+      indexName: 'test_zexian',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/01/librealsense/"/>
+
+
+
+
+
+  <title>librealsense | Zexian's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e89534a89f31a680c764f69e9f9fac89";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zexian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/01/librealsense/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zexian Dong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/maxresdefault.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zexian's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">librealsense</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-01T14:53:48-07:00">
+                2018-08-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/openark/" itemprop="url" rel="index">
+                    <span itemprop="name">openark</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/01/librealsense/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/08/01/librealsense/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Depth-from-Stereo"><a href="#Depth-from-Stereo" class="headerlink" title="Depth from Stereo"></a>Depth from Stereo</h1><p>Using this tutorial you will learn the basics of stereoscopic vision, including block-matching, calibration and rectification, depth from stereo using opencv, passive vs. active stereo and relation to structured light. </p>
+<h3 id="Why-Depth"><a href="#Why-Depth" class="headerlink" title="Why Depth?"></a>Why Depth?</h3><p>Regular consumer web-cams offer streams of RGB data within the visible spectrum. This data can be used for object recognition and tracking, as well as some basic scene understanding. </p>
+<blockquote>
+<p>Even with <strong>machine learning</strong> grasping the exact dimensions of physical objects is a very hard problem </p>
+</blockquote>
+<p>This is where <strong>depth cameras</strong> come-in. The goal of a depth camera is to add a brand-new channel of information, with distance to every pixel.<br>This new channel can be used just like the rest (for training and image processing) but also for measurement and scene reconstruction. </p>
+<h3 id="n-Vision"><a href="#n-Vision" class="headerlink" title="n Vision"></a>n Vision</h3><p>Depth from Stereo is a classic computer vision algorithm inspired by human <a href="https://en.wikipedia.org/wiki/Binocular_vision" target="_blank" rel="noopener">binocular vision system</a>. It relies on two parallel view-ports and calculates depth by estimating disparities between matching key-points in the left and right images:</p>
+<p align="center"><img src="https://raw.githubusercontent.com/wiki/dorodnic/librealsense/stereo-ssd.png"><br><i><b>Depth from Stereo</b> algorithm finds disparity by matching blocks in left and right images</i></p>
+
+<p>Most naive implementation of this idea is the <strong>SSD (Sum of Squared Differences) block-matching</strong> algorithm:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line"></span><br><span class="line">fx = <span class="number">942.8</span>        <span class="comment"># lense focal length</span></span><br><span class="line">baseline = <span class="number">54.8</span>   <span class="comment"># distance in mm between the two cameras</span></span><br><span class="line">disparities = <span class="number">64</span>  <span class="comment"># num of disparities to consider</span></span><br><span class="line">block = <span class="number">15</span>        <span class="comment"># block size to match</span></span><br><span class="line">units = <span class="number">0.001</span>     <span class="comment"># depth units</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> xrange(block, left.shape[<span class="number">0</span>] - block - <span class="number">1</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> xrange(block + disparities, left.shape[<span class="number">1</span>] - block - <span class="number">1</span>):</span><br><span class="line">        ssd = numpy.empty([disparities, <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">        <span class="comment"># calc SSD at all possible disparities</span></span><br><span class="line">        l = left[(i - block):(i + block), (j - block):(j + block)]</span><br><span class="line">        <span class="keyword">for</span> d <span class="keyword">in</span> xrange(<span class="number">0</span>, disparities):</span><br><span class="line">            r = right[(i - block):(i + block), (j - d - block):(j - d + block)]</span><br><span class="line">            ssd[d] = numpy.sum((l[:,:]-r[:,:])**<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># select the best match</span></span><br><span class="line">        disparity[i, j] = numpy.argmin(ssd)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Convert disparity to depth</span></span><br><span class="line">depth = np.zeros(shape=left.shape).astype(float)</span><br><span class="line">depth[disparity &gt; <span class="number">0</span>] = (fx * baseline) / (units * disparity[disparity &gt; <span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+<p align="center"><img src="https://raw.githubusercontent.com/wiki/dorodnic/librealsense/rectified.png" width="70%"><br><i>Rectified image pair used as input to the algorithm</i></p>
+
+<p align="center"><img src="https://raw.githubusercontent.com/wiki/dorodnic/librealsense/ssd-depth.png" width="70%"><br><i>Depth map produced by the naive <b>SSD block-matching</b> implementation</i></p>
+
+<p align="center"><img src="https://raw.githubusercontent.com/wiki/dorodnic/librealsense/naive-depth.gif" width="70%"><br><i>Point-cloud reconstructed using <b>SSD block-matching</b></i></p>
+
+<p>There are several challenges that any actual product has to overcome: </p>
+<ol>
+<li>Ensuring that the images are in fact coming from two parallel views</li>
+<li>Filtering out bad pixels where matching failed due to occlusion</li>
+<li>Expanding the range of generated disparities from fixed set of integers to achieve sub-pixel accuracy</li>
+</ol>
+<h1 id="D435"><a href="#D435" class="headerlink" title="D435"></a>D435</h1><p>This document describes the projection mathematics relating the images provided by the RealSense depth devices to their associated 3D coordinate systems, as well as the relationships between those coordinate systems. These facilities are mathematically equivalent to those provided by previous APIs and SDKs, but may use slightly different phrasing of coefficients and formulas.</p>
+<h2 id="Table-of-Contents"><a href="#Table-of-Contents" class="headerlink" title="Table of Contents"></a>Table of Contents</h2><ul>
+<li><a href="https://github.com/IntelRealSense/librealsense/wiki/Projection-in-RealSense-SDK-2.0#pixel-coordinates" target="_blank" rel="noopener">Pixel Coordinates</a></li>
+<li><a href="https://github.com/IntelRealSense/librealsense/wiki/Projection-in-RealSense-SDK-2.0#point-coordinates" target="_blank" rel="noopener">Point Coordinates</a></li>
+<li>Intrinsic Camera Parameters<ul>
+<li><a href="https://github.com/IntelRealSense/librealsense/wiki/Projection-in-RealSense-SDK-2.0#distortion-models" target="_blank" rel="noopener">Distortion Models</a></li>
+</ul>
+</li>
+<li><a href="https://github.com/IntelRealSense/librealsense/wiki/Projection-in-RealSense-SDK-2.0#extrinsic-camera-parameters" target="_blank" rel="noopener">Extrinsic Camera Parameters</a></li>
+<li><a href="https://github.com/IntelRealSense/librealsense/wiki/Projection-in-RealSense-SDK-2.0#depth-image-formats" target="_blank" rel="noopener">Depth Image Formats</a></li>
+<li>Processing Blocks Helpers<ul>
+<li><a href="https://github.com/IntelRealSense/librealsense/wiki/Projection-in-RealSense-SDK-2.0#point-cloud" target="_blank" rel="noopener">Point Cloud</a></li>
+<li><a href="https://github.com/IntelRealSense/librealsense/wiki/Projection-in-RealSense-SDK-2.0#frame-alignment" target="_blank" rel="noopener">Frame Alignment</a></li>
+</ul>
+</li>
+<li>Appendix: Model Specific Details<ul>
+<li><a href="https://github.com/IntelRealSense/librealsense/wiki/Projection-in-RealSense-SDK-2.0#sr300" target="_blank" rel="noopener">SR300</a></li>
+<li><a href="https://github.com/IntelRealSense/librealsense/wiki/Projection-in-RealSense-SDK-2.0#d400" target="_blank" rel="noopener">D400</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="Pixel-Coordinates"><a href="#Pixel-Coordinates" class="headerlink" title="Pixel Coordinates"></a>Pixel Coordinates</h2><p>Each stream of images provided by this SDK is associated with a separate 2D coordinate space, specified in pixels, with the coordinate <code>[0,0]</code> referring to the center of the top left pixel in the image, and <code>[w-1,h-1]</code> referring to the center of the bottom right pixel in an image containing exactly <code>w</code> columns and <code>h</code> rows. That is, from the perspective of the camera, the x-axis points to the right and the y-axis points down. Coordinates within this space are referred to as “pixel coordinates”, and are used to index into images to find the content of particular pixels.</p>
+<p>左上角是<code>[0,0]</code>,右下角是<code>[w-1,h-1]</code></p>
+<h2 id="Point-Coordinates"><a href="#Point-Coordinates" class="headerlink" title="Point Coordinates"></a>Point Coordinates</h2><p>Each stream of images provided by this SDK is also associated with a separate 3D coordinate space, specified in meters, with the coordinate <code>[0,0,0]</code> referring to the center of the physical imager. Within this space, the positive x-axis points to the right, the positive y-axis points down, and the positive z-axis points forward. Coordinates within this space are referred to as “points”, and are used to describe locations within 3D space that might be visible within a particular image.</p>
+<h2 id="Intrinsic-Camera-Parameters"><a href="#Intrinsic-Camera-Parameters" class="headerlink" title="Intrinsic Camera Parameters"></a>Intrinsic Camera Parameters</h2><p>The relationship between a stream’s 2D and 3D coordinate systems is described by its intrinsic camera parameters, contained in the <a href="https://github.com/IntelRealSense/librealsense/blob/5e73f7bb906a3cbec8ae43e888f182cc56c18692/include/librealsense2/h/rs_types.h#L55" target="_blank" rel="noopener"><code>rs2_intrinsics</code></a> struct. Each model of RealSense device is somewhat different, and the <code>rs2_intrinsics</code> struct must be capable of describing the images produced by all of them. The basic set of assumptions is described below:</p>
+<ol>
+<li>Images may be of arbitrary size</li>
+</ol>
+<ul>
+<li>The <code>width</code> and <code>height</code> fields describe the number of rows and columns in the image, respectively</li>
+</ul>
+<ol>
+<li>The field of view of an image may vary</li>
+</ol>
+<ul>
+<li>The <code>fx</code> and <code>fy</code> fields describe the focal length of the image, as a multiple of pixel width and height</li>
+</ul>
+<ol>
+<li>The pixels of an image are not necessarily square</li>
+</ol>
+<ul>
+<li>The <code>fx</code> and <code>fy</code> fields are allowed to be different (though they are commonly close)</li>
+</ul>
+<ol>
+<li>The center of projection is not necessarily the center of the image</li>
+</ol>
+<ul>
+<li>The <code>ppx</code> and <code>ppy</code> fields describe the pixel coordinates of the principal point (center of projection)</li>
+</ul>
+<ol>
+<li>The image may contain distortion</li>
+</ol>
+<ul>
+<li>The <code>model</code> field describes which of several supported distortion models was used to calibrate the image, and the <code>coeffs</code> field provides an array of up to five coefficients describing the distortion model</li>
+</ul>
+<p>Knowing the intrinsic camera parameters of an images allows you to carry out two fundamental mapping operations.</p>
+<ol>
+<li>Projection</li>
+</ol>
+<ul>
+<li>Projection takes a point from a stream’s 3D coordinate space, and maps it to a 2D pixel location on that stream’s images. It is provided by the header-only function <a href="https://github.com/IntelRealSense/librealsense/blob/5e73f7bb906a3cbec8ae43e888f182cc56c18692/include/librealsense2/rsutil.h#L15" target="_blank" rel="noopener"><code>rs2_project_point_to_pixel(...)</code></a>.</li>
+</ul>
+<ol>
+<li>Deprojection</li>
+</ol>
+<ul>
+<li>Deprojection takes a 2D pixel location on a stream’s images, as well as a depth, specified in meters, and maps it to a 3D point location within the stream’s associated 3D coordinate space. It is provided by the header-only function <a href="https://github.com/IntelRealSense/librealsense/blob/5e73f7bb906a3cbec8ae43e888f182cc56c18692/include/librealsense2/rsutil.h#L46" target="_blank" rel="noopener"><code>rs2_deproject_pixel_to_point(...)</code></a>.</li>
+</ul>
+<p>Intrinsic parameters can be retrieved from any <code>rs2::video_stream_profile</code> object via a call to <code>get_intrinsics()</code>. (See <a href="https://github.com/IntelRealSense/librealsense/blob/5e73f7bb906a3cbec8ae43e888f182cc56c18692/examples/sensor-control/api_how_to.h#L209" target="_blank" rel="noopener">example here</a>)</p>
+<h4 id="Distortion-Models"><a href="#Distortion-Models" class="headerlink" title="Distortion Models"></a>Distortion Models</h4><p>Based on the design of each model of RealSense device, the different streams may be exposed via different distortion models.</p>
+<ol>
+<li><strong>None</strong></li>
+</ol>
+<ul>
+<li>An image has no distortion, as though produced by an idealized pinhole camera. This is typically the result of some hardware or software algorithm undistorting an image produced by a physical imager, but may simply indicate that the image was derived from some other image or images which were already undistorted. Images with no distortion have closed-form formulas for both projection and deprojection, and can be used with both <code>rs2_project_point_to_pixel(...)</code> and <code>rs2_deproject_pixel_to_point(...)</code>.</li>
+</ul>
+<ol>
+<li><strong>Modified Brown-Conrady</strong> Distortion</li>
+</ol>
+<ul>
+<li>An image is distorted, and has been calibrated according to a variation of the Brown-Conrady Distortion model. This model provides a closed-form formula to map from undistorted points to distorted points, while mapping in the other direction requires iteration or lookup tables. Therefore, images with Modified Brown-Conrady Distortion are being undistorted when calling <code>rs2_project_point_to_pixel(...)</code>. This model is used by the RealSense D415’s color image stream.</li>
+</ul>
+<ol>
+<li><strong>Inverse Brown-Conrady</strong> Distortion</li>
+</ol>
+<ul>
+<li>An image is distorted, and has been calibrated according to the inverse of the Brown-Conrady Distortion model. This model provides a closed-form formula to map from distorted points to undistored points, while mapping in the other direction requires iteration or lookup tables. Therefore, images with Inverse Brown-Conrady Distortion are being undistorted when calling <code>rs2_deproject_pixel_to_point(...)</code>. This model is used by the RealSense SR300’s depth and infrared image streams.</li>
+</ul>
+<p>Although it is inconvenient that projection and deprojection cannot always be applied to an image, the inconvenience is minimized by the fact that RealSense devices always support deprojection from depth images, and always support projection to color images. Therefore, it is always possible to map a depth image into a set of 3D points (a point cloud), and it is always possible to discover where a 3D object would appear on the color image.</p>
+<h2 id="Extrinsic-Camera-Parameters"><a href="#Extrinsic-Camera-Parameters" class="headerlink" title="Extrinsic Camera Parameters"></a>Extrinsic Camera Parameters</h2><p>The 3D coordinate systems of each stream may in general be distinct. For instance, it is common for depth to be generated from one or more infrared imagers, while the color stream is provided by a separate color imager. The relationship between the separate 3D coordinate systems of separate streams is described by their extrinsic parameters, contained in the <a href="https://github.com/IntelRealSense/librealsense/blob/5e73f7bb906a3cbec8ae43e888f182cc56c18692/include/librealsense2/h/rs_sensor.h#L79" target="_blank" rel="noopener"><code>rs2_extrinsics</code></a> struct. The basic set of assumptions is described below:</p>
+<ol>
+<li>Imagers may be in separate locations, but are rigidly mounted on the same physical device</li>
+</ol>
+<ul>
+<li>The <code>translation</code> field contains the 3D translation between the imager’s physical positions, specified in meters</li>
+</ul>
+<ol>
+<li>Imagers may be oriented differently, but are rigidly mounted on the same physical device</li>
+</ol>
+<ul>
+<li>The <code>rotation</code> field contains a 3x3 orthonormal rotation matrix between the imager’s physical orientations</li>
+</ul>
+<ol>
+<li>All 3D coordinate systems are specified in meters</li>
+</ol>
+<ul>
+<li>There is no need for any sort of scaling in the transformation between two coordinate systems</li>
+</ul>
+<ol>
+<li>All coordinate systems are right handed and have an orthogonal basis</li>
+</ol>
+<ul>
+<li>There is no need for any sort of mirroring/skewing in the transformation between two coordinate systems</li>
+</ul>
+<p>Knowing the extrinsic parameters between two streams allows you to transform points from one coordinate space to another, which can be done by calling <a href="https://github.com/IntelRealSense/librealsense/blob/5e73f7bb906a3cbec8ae43e888f182cc56c18692/include/librealsense2/rsutil.h#L69" target="_blank" rel="noopener"><code>rs2_transform_point_to_point(...)</code></a>. This operation is defined as a standard affine transformation using a 3x3 rotation matrix and a 3-component translation vector.</p>
+<p>Extrinsic parameters can be retrieved via a call to <a href="https://github.com/IntelRealSense/librealsense/blob/5e73f7bb906a3cbec8ae43e888f182cc56c18692/include/librealsense2/h/rs_sensor.h#L404" target="_blank" rel="noopener"><code>rs2_get_extrinsics(...)</code></a> between any two streams which are supported by the device, or using a <code>rs2::stream_profile</code> object via <code>get_extrinsics_to(...)</code> (see <a href="https://github.com/IntelRealSense/librealsense/blob/5e73f7bb906a3cbec8ae43e888f182cc56c18692/examples/sensor-control/api_how_to.h#L277" target="_blank" rel="noopener">example here</a>). One does not need to enable any streams beforehand, the device extrinsics are assumed to be independent of the content of the streams’ images and constant for a given device for the lifetime of the program.</p>
+<h2 id="Depth-Image-Formats"><a href="#Depth-Image-Formats" class="headerlink" title="Depth Image Formats"></a>Depth Image Formats</h2><p>As mentioned above, mapping from 2D pixel coordinates to 3D point coordinates via the <code>rs2_intrinsics</code> structure and the <code>rs2_deproject_pixel_to_point(...)</code> function requires knowledge of the depth of that pixel in meters. Certain pixel formats, exposed by this SDK, contain per-pixel depth information, and can be immediately used with this function. Other images do not contain per-pixel depth information, and thus would typically be projected into instead of deprojected from.</p>
+<ol>
+<li><code>RS2_FORMAT_Z16</code> (Under <a href="https://github.com/IntelRealSense/librealsense/blob/5e73f7bb906a3cbec8ae43e888f182cc56c18692/include/librealsense2/h/rs_sensor.h#L55" target="_blank" rel="noopener"><code>rs2_format</code></a>)</li>
+</ol>
+<ul>
+<li><p>Depth is stored as one unsigned 16-bit integer per pixel, mapped linearly to depth in camera-specific units. The distance, in meters, corresponding to one integer increment in depth values can be queried via <a href="https://github.com/IntelRealSense/librealsense/blob/5e73f7bb906a3cbec8ae43e888f182cc56c18692/include/librealsense2/h/rs_sensor.h#L152" target="_blank" rel="noopener"><code>rs2_get_depth_scale(...)</code></a> or using a <code>rs2::depth_sensor</code> via <code>get_depth_scale()</code> (see <a href="https://github.com/IntelRealSense/librealsense/blob/5e73f7bb906a3cbec8ae43e888f182cc56c18692/examples/sensor-control/api_how_to.h#L193" target="_blank" rel="noopener">example here</a>).</p>
+<p>The following shows how to retrieve the depth of a pixel in meters:</p>
+<p>Using <code>C</code> API:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const float scale = rs2_get_depth_scale(sensor, NULL);</span><br><span class="line">const uint16_t * image = (const uint16_t *)rs2_get_frame_data(frame, NULL);</span><br><span class="line">float depth_in_meters = scale * image[pixel_index];</span><br></pre></td></tr></table></figure>
+<p>Using <code>C++</code> API:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rs2::depth_frame dpt_frame = frame.as&lt;rs2::depth_frame&gt;();</span><br><span class="line">float pixel_distance_in_meters = dpt_frame.get_distance(x,y);</span><br></pre></td></tr></table></figure>
+<p>using <code>Python</code> API:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dpt_frame = pipe.wait_for_frames().get_depth_frame().as_depth_frame()</span><br><span class="line">pixel_distance_in_meters = dpt_frame.get_distance(x,y)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>If a device fails to determine the depth of a given image pixel, a value of zero will be stored in the depth image. This is a reasonable sentinel for “no depth” because all pixels with a depth of zero would correspond to the same physical location, the location of the imager itself.</p>
+</li>
+<li><p>The default scale of an SR300 device is 1/32th of a millimeter, allowing for a maximum expressive range of two meters. However, the scale is encoded into the camera’s calibration information, potentially allowing for long-range models to use a different scaling factor.</p>
+</li>
+<li><p>The default scale of a D400 device is one millimeter, allowing for a maximum expressive range of ~65 meters. The depth scale can be modified by calling <code>rs2_set_option(...)</code> with <code>RS2_OPTION_DEPTH_UNITS</code>, which specifies the number of meters per one increment of depth. 0.001 would indicate millimeter scale, while 0.01 would indicate centimeter scale.</p>
+</li>
+</ul>
+<h2 id="Processing-Blocks-Helpers"><a href="#Processing-Blocks-Helpers" class="headerlink" title="Processing Blocks Helpers"></a>Processing Blocks Helpers</h2><p>The SDK provides two main processing blocks related to image projecting:</p>
+<ol>
+<li><a href="https://github.com/IntelRealSense/librealsense/wiki/Projection-in-RealSense-SDK-2.0#point-cloud" target="_blank" rel="noopener">Point Cloud</a></li>
+<li><a href="https://github.com/IntelRealSense/librealsense/wiki/Projection-in-RealSense-SDK-2.0#frame-alignment" target="_blank" rel="noopener">Frame Alignment</a></li>
+</ol>
+<h3 id="Point-Cloud"><a href="#Point-Cloud" class="headerlink" title="Point Cloud"></a>Point Cloud</h3><p>As part of the API we offer a processing block for creating a point cloud and corresponding texture mapping from depth and color frames. The point cloud created from a depth image is a set of points in the 3D coordinate system of the depth stream. The following demonstrates how to create a point cloud object:</p>
+<p>Using <code>C</code> API:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rs2_frame_queue* q = rs2_create_frame_queue(1, NULL);</span><br><span class="line">rs2_processing_block* pc = rs2_create_pointcloud(NULL);</span><br><span class="line">rs2_start_processing_queue(pc, q, NULL);</span><br><span class="line">rs2_process_frame(pc, depth_frame, NULL);</span><br><span class="line">rs2_frame* points = rs2_wait_for_frame(q, 5000, NULL);</span><br><span class="line">const rs2_stream_profile* sp = rs2_get_frame_stream_profile(color_frame, NULL);</span><br><span class="line">rs2_get_stream_profile_data(sp, ..., &amp;uid, ..., NULL);</span><br><span class="line">rs2_set_option((rs2_options*)pc, RS2_OPTION_TEXTURE_SOURCE, uid, NULL);</span><br><span class="line">rs2_process_frame(pc, color_frame, NULL);</span><br></pre></td></tr></table></figure>
+<p>Using <code>C++</code> API:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rs2::pointcloud pc;</span><br><span class="line">rs2::points points = pc.calculate(depth_frame);</span><br><span class="line">pc.map_to(color_frame);</span><br></pre></td></tr></table></figure>
+<p>using <code>Python</code> API:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import pyrealsense2 as rs</span><br><span class="line">pc = rs.pointcloud()</span><br><span class="line">points = pc.calculate(depth_frame)</span><br><span class="line">pc.map_to(color_frame)</span><br></pre></td></tr></table></figure>
+<p>For additional examples, see <a href="https://github.com/IntelRealSense/librealsense/blob/master/examples/pointcloud" target="_blank" rel="noopener">examples/pointcloud</a>.</p>
+<p>In addition, an example for integrating with PCL (Point Cloud Library) is available <a href="https://github.com/IntelRealSense/librealsense/tree/master/wrappers/pcl" target="_blank" rel="noopener">here</a>.</p>
+<h3 id="Frame-Alignment"><a href="#Frame-Alignment" class="headerlink" title="Frame Alignment"></a>Frame Alignment</h3><p>Usually when dealing with color and depth images, mapping each pixel from one image to the other is desired. The SDK offers a processing block for aligning the image to one another, producing a set of frames that share the same resolution and allow for easy mapping of pixels.</p>
+<p>The following demonstrates how to create an <code>align</code> object:</p>
+<p>Using <code>C</code> API:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rs2_processing_block* align = rs2_create_align(RS2_STREAM_COLOR, NULL);</span><br><span class="line">rs2_frame_queue* q = rs2_create_frame_queue(1, NULL);</span><br><span class="line">rs2_start_processing_queue(align, q, NULL);</span><br><span class="line">rs2_process_frame(align, depth_and_color_frameset, NULL);</span><br><span class="line">rs2_frame* aligned_frames = rs2_wait_for_frame(q, 5000, NULL);</span><br><span class="line">for (i = 0; i &lt; rs2_get_frame_points_count(aligned_frames, NULL); i++)</span><br><span class="line">&#123;</span><br><span class="line">    rs2_frame* aligned_frame = rs2_extract_frame(aligned_frames, i, NULL);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Using <code>C++</code> API:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rs2::align align(RS2_STREAM_COLOR);</span><br><span class="line">auto aligned_frames = align.process(depth_and_color_frameset);</span><br><span class="line">rs2::video_frame color_frame = aligned_frames.first(RS2_STREAM_COLOR);</span><br><span class="line">rs2::depth_frame aligned_depth_frame = aligned_frames.get_depth_frame();</span><br></pre></td></tr></table></figure>
+<p>using <code>Python</code> API:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import pyrealsense2 as rs</span><br><span class="line">align = rs.align(rs.stream.color)</span><br><span class="line">aligned_frames = align.proccess(depth_and_color_frameset)</span><br><span class="line">color_frame = aligned_frames.first(rs.stream.color)</span><br><span class="line">aligned_depth_frame = aligned_frames.get_depth_frame()</span><br></pre></td></tr></table></figure>
+<p>For additional examples, see <a href="https://github.com/IntelRealSense/librealsense/tree/master/examples/align" target="_blank" rel="noopener">examples/align</a> and <a href="https://github.com/IntelRealSense/librealsense/blob/master/wrappers/python/examples/align-depth2color.py" target="_blank" rel="noopener">align-depth2color.py</a>.</p>
+<h2 id="Appendix-Model-Specific-Details"><a href="#Appendix-Model-Specific-Details" class="headerlink" title="Appendix: Model Specific Details"></a>Appendix: Model Specific Details</h2><p>It is not necessary to know which model of RealSense device is plugged in to successfully make use of the projection capabilities of this SDK. However, developers can take advantage of certain known properties of given devices.</p>
+<h4 id="SR300"><a href="#SR300" class="headerlink" title="SR300"></a>SR300</h4><ol>
+<li>Depth images are always pixel-aligned with infrared images</li>
+</ol>
+<ul>
+<li>The depth and infrared images have identical intrinsics</li>
+<li>The depth and infrared images will always use the Inverse Brown-Conrady distortion model</li>
+<li>The extrinsic transformation between depth and infrared is the identity transform</li>
+<li>Pixel coordinates can be used interchangeably between these two streams</li>
+</ul>
+<ol>
+<li>Color images have no distortion</li>
+</ol>
+<ul>
+<li>When projecting to the color image on these devices, the distortion step can be skipped entirely</li>
+</ul>
+<h4 id="D400-Series"><a href="#D400-Series" class="headerlink" title="D400-Series"></a>D400-Series</h4><ol>
+<li>Left and right infrared images are rectified by default (Y16 format is not)</li>
+</ol>
+<ul>
+<li>The two infrared streams have identical intrinsics</li>
+<li>The two infrared streams have no distortion</li>
+<li>There is no rotation between left and right infrared images (identity matrix)</li>
+<li>There is translation on only one axis between left and right infrared images (<code>translation[1]</code> and <code>translation[2]</code> are zero)</li>
+<li>Therefore, the <code>y</code> component of pixel coordinates can be used interchangeably between these two streams</li>
+</ul>
+<ol>
+<li><p>Stereo disparity is related to depth via an inverse linear relationship, and the distance of a point which registers a disparity of 1 can be queried via <code>1 / rs2_get_depth_scale(...)</code>. The following shows how to retrieve the depth of a pixel in meters:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const float scale = rs2_get_depth_scale(sensor, NULL);</span><br><span class="line">const uint16_t * image = (const uint16_t *)rs2_get_frame_data(frame, NULL);</span><br><span class="line">float depth_in_meters = 1 / (scale * image[pixel_index]);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ul>
+<li>Unlike <code>RS2_FORMAT_Z16</code>, a disparity value of zero is meaningful. A stereo match with zero disparity will occur for objects “at infinity”, objects which are so far away that the parallax between the two imagers is negligible. By contrast, there is a maximum possible disparity.</li>
+<li>Disparity is currently only available on the D400. Controlling disparity can be modified using the <code>advanced_mode</code> controls.</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/realsense-open-ark/" rel="tag"># realsense open_ark</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/30/OpenCv-learn/" rel="next" title="OpenCv_learn">
+                <i class="fa fa-chevron-left"></i> OpenCv_learn
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/14/Depth-camera/" rel="prev" title="Depth-camera">
+                Depth-camera <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/maxresdefault.jpg"
+                alt="Zexian Dong" />
+            
+              <p class="site-author-name" itemprop="name">Zexian Dong</p>
+              <p class="site-description motion-element" itemprop="description">I can do all things!</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/dongzx13" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:dzx07522@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Depth-from-Stereo"><span class="nav-number">1.</span> <span class="nav-text">Depth from Stereo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-Depth"><span class="nav-number">1.0.1.</span> <span class="nav-text">Why Depth?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#n-Vision"><span class="nav-number">1.0.2.</span> <span class="nav-text">n Vision</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#D435"><span class="nav-number">2.</span> <span class="nav-text">D435</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Table-of-Contents"><span class="nav-number">2.1.</span> <span class="nav-text">Table of Contents</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pixel-Coordinates"><span class="nav-number">2.2.</span> <span class="nav-text">Pixel Coordinates</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Point-Coordinates"><span class="nav-number">2.3.</span> <span class="nav-text">Point Coordinates</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Intrinsic-Camera-Parameters"><span class="nav-number">2.4.</span> <span class="nav-text">Intrinsic Camera Parameters</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Distortion-Models"><span class="nav-number">2.4.0.1.</span> <span class="nav-text">Distortion Models</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extrinsic-Camera-Parameters"><span class="nav-number">2.5.</span> <span class="nav-text">Extrinsic Camera Parameters</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Depth-Image-Formats"><span class="nav-number">2.6.</span> <span class="nav-text">Depth Image Formats</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Processing-Blocks-Helpers"><span class="nav-number">2.7.</span> <span class="nav-text">Processing Blocks Helpers</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Point-Cloud"><span class="nav-number">2.7.1.</span> <span class="nav-text">Point Cloud</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Frame-Alignment"><span class="nav-number">2.7.2.</span> <span class="nav-text">Frame Alignment</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Appendix-Model-Specific-Details"><span class="nav-number">2.8.</span> <span class="nav-text">Appendix: Model Specific Details</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SR300"><span class="nav-number">2.8.0.1.</span> <span class="nav-text">SR300</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#D400-Series"><span class="nav-number">2.8.0.2.</span> <span class="nav-text">D400-Series</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zexian Dong</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'dongzx13',
+            repo: 'gitment-comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '6f54836e7a6de5628a4763894379fce5e4f036f6',
+            
+                client_id: '8eeb5a382fa5cf12fbd6'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
