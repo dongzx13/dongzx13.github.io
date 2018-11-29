@@ -538,24 +538,14 @@
 
       
         
-          
-            <h2 id="Image-Pre-Processing"><a href="#Image-Pre-Processing" class="headerlink" title="Image Pre-Processing"></a>Image Pre-Processing</h2><p>&lt;!–more&gt;</p>
-<p>The following pre-processing steps are applied to an image before it is sent through the network. These steps must be identical for both training and inference. The mean vector (<img src="http://www.telesens.co/wp-content/ql-cache/quicklatex.com-b92b581f32d3d81c480f8e90786f19b3_l3.svg" alt="3 \times 1">, one number corresponding to each color channel) is not the mean of the pixel values in the current image but a configuration value that is identical across all training and test images.</p>
-<p><img src="http://18.206.219.5/wp-content/uploads/2018/03/img_5aa46e9e0bbd7.png" alt="img"></p>
-<p>The default values for <img src="http://www.telesens.co/wp-content/ql-cache/quicklatex.com-9f4e11553f1cdafe48967ac757dc4977_l3.svg" alt="targetSize"> and <img src="http://www.telesens.co/wp-content/ql-cache/quicklatex.com-ae4f870e7937e7b34b971d99093e8331_l3.svg" alt="maxSize"> parameters are 600 and 1200 respectively.</p>
-<h2 id="Network-Organization"><a href="#Network-Organization" class="headerlink" title="Network Organization"></a>Network Organization</h2><p>A R-CNN uses neural networks to solve two main problems:</p>
-<ul>
-<li>Identify promising regions (Region of Interest – ROI) in an input image that are likely to contain foreground objects</li>
-<li>Compute the object class probability distribution of each ROI – i.e., compute the probability that the ROI contains an object of a certain class. The user can then select the object class with the highest probability as the classification result.</li>
-</ul>
-<p>R-CNNs consist of three main types of networks:</p>
-<ol>
-<li>Head</li>
-<li>Region Proposal Network (RPN)</li>
-<li>Classification Network</li>
-</ol>
-
-          
+          <h2 id="Image-Pre-Processing"><a href="#Image-Pre-Processing" class="headerlink" title="Image Pre-Processing"></a>Image Pre-Processing</h2>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/19/pytorch-faster-rcnn/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
