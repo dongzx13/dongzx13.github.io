@@ -300,6 +300,269 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/10/mac同时使用网线和无线网/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zexian Dong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/maxresdefault.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zexian's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/10/mac同时使用网线和无线网/" itemprop="url">mac同时使用网线和无线网</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-10T14:51:26+08:00">
+                2018-12-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <a id="more"></a>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">netstat -rn <span class="comment">#查看网关的状态</span></span><br><span class="line">route get 0.0.0.0 <span class="comment">#查看连接internet的网关</span></span><br><span class="line">sudo route -n delete default **.**.**.** <span class="comment">#删除连接服务器的网关</span></span><br><span class="line">sudo route add -net 0.0.0.0 **.**.**.** <span class="comment">#加入连接internet应该使用可以连接internet的网关</span></span><br><span class="line">sudo route add -net 服务器地址 可以连接服务器的网关</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/29/杂七杂八整理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zexian Dong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/maxresdefault.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zexian's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/29/杂七杂八整理/" itemprop="url">杂七杂八整理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-29T14:56:48+08:00">
+                2018-11-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <a id="more"></a>
+<ol>
+<li><p>如何hexo+next添加algolia搜索</p>
+<p><a href="https://www.jianshu.com/p/fa2354d61e37" target="_blank" rel="noopener">参考文章地址</a></p>
+</li>
+<li><p>jupyter需要加载安装好的虚拟环境</p>
+</li>
+<li><p>python编码规范</p>
+<p>​    等号一般在赋值的时候两边都要加空格，但是当’=’用于指示关键字参数或默认参数值时, 不要在其两侧使用空格.</p>
+<ol>
+<li><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Yes: <span class="function"><span class="keyword">def</span> <span class="title">complex</span><span class="params">(real, imag=<span class="number">0.0</span>)</span>:</span> <span class="keyword">return</span> magic(r=real, i=imag)</span><br></pre></td></tr></table></figure>
+<p>​    </p>
+<p>避免在循环中用+和+=操作符来累加字符串. 由于字符串是不可变的, 这样做会创建不必要的临时对象, 并且导致二次方而不是线性的运行时间. 作为替代方案, 你可以将每个子串加入列表, 然后在循环结束后用 <code>.join</code> 连接列表. (也可以将每个子串写入一个 <code>cStringIO.StringIO</code> 缓存中.)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Yes: x = a + b</span><br><span class="line">     x = <span class="string">'%s, %s!'</span> % (imperative, expletive)</span><br><span class="line">     x = <span class="string">'&#123;&#125;, &#123;&#125;!'</span>.format(imperative, expletive)</span><br><span class="line">     x = <span class="string">'name: %s; score: %d'</span> % (name, n)</span><br><span class="line">     x = <span class="string">'name: &#123;&#125;; score: &#123;&#125;'</span>.format(name, n)</span><br><span class="line">No: x = <span class="string">'%s%s'</span> % (a, b)  <span class="comment"># use + in this case</span></span><br><span class="line">    x = <span class="string">'&#123;&#125;&#123;&#125;'</span>.format(a, b)  <span class="comment"># use + in this case</span></span><br><span class="line">    x = imperative + <span class="string">', '</span> + expletive + <span class="string">'!'</span></span><br><span class="line">    x = <span class="string">'name: '</span> + name + <span class="string">'; score: '</span> + str(n)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>英语积累</p>
+<ol>
+<li><code>Tensor</code> and <code>Function</code> are interconnected and build up an <code>acyclic</code> graph</li>
+</ol>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/27/word2vec/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1349,304 +1612,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/30/OpenCv-learn/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zexian Dong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/maxresdefault.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zexian's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/30/OpenCv-learn/" itemprop="url">OpenCv_learn</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-30T16:29:55+08:00">
-                2018-07-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/openark/" itemprop="url" rel="index">
-                    <span itemprop="name">openark</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Mat的理解</p>
-<p>Mat的好处是可以自动的释放内存</p>
-<p>Mat是一个基础的类有两个部分</p>
-<ol>
-<li>矩阵头（包括矩阵大小，存储方式，存储地址等信息）</li>
-<li>能指向存储像素信息的矩阵</li>
-</ol>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/07/30/OpenCv-learn/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/30/Const-C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zexian Dong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/maxresdefault.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zexian's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/30/Const-C/" itemprop="url">Const_C++</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-30T12:07:20+08:00">
-                2018-07-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index">
-                    <span itemprop="name">C++</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Const c++的使用总结</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/07/30/Const-C/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1701,7 +1666,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1723,7 +1688,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

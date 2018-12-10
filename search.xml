@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[mac同时使用网线和无线网]]></title>
+    <url>%2F2018%2F12%2F10%2Fmac%E5%90%8C%E6%97%B6%E4%BD%BF%E7%94%A8%E7%BD%91%E7%BA%BF%E5%92%8C%E6%97%A0%E7%BA%BF%E7%BD%91%2F</url>
+    <content type="text"><![CDATA[12345netstat -rn #查看网关的状态route get 0.0.0.0 #查看连接internet的网关sudo route -n delete default **.**.**.** #删除连接服务器的网关sudo route add -net 0.0.0.0 **.**.**.** #加入连接internet应该使用可以连接internet的网关sudo route add -net 服务器地址 可以连接服务器的网关]]></content>
+      <tags>
+        <tag>杂七杂八</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[杂七杂八整理]]></title>
+    <url>%2F2018%2F11%2F29%2F%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB%E6%95%B4%E7%90%86%2F</url>
+    <content type="text"><![CDATA[如何hexo+next添加algolia搜索 参考文章地址 jupyter需要加载安装好的虚拟环境 python编码规范 ​ 等号一般在赋值的时候两边都要加空格，但是当’=’用于指示关键字参数或默认参数值时, 不要在其两侧使用空格. 1Yes: def complex(real, imag=0.0): return magic(r=real, i=imag) ​ 避免在循环中用+和+=操作符来累加字符串. 由于字符串是不可变的, 这样做会创建不必要的临时对象, 并且导致二次方而不是线性的运行时间. 作为替代方案, 你可以将每个子串加入列表, 然后在循环结束后用 .join 连接列表. (也可以将每个子串写入一个 cStringIO.StringIO 缓存中.) 123456789Yes: x = a + b x = '%s, %s!' % (imperative, expletive) x = '&#123;&#125;, &#123;&#125;!'.format(imperative, expletive) x = 'name: %s; score: %d' % (name, n) x = 'name: &#123;&#125;; score: &#123;&#125;'.format(name, n)No: x = '%s%s' % (a, b) # use + in this case x = '&#123;&#125;&#123;&#125;'.format(a, b) # use + in this case x = imperative + ', ' + expletive + '!' x = 'name: ' + name + '; score: ' + str(n) 英语积累 Tensor and Function are interconnected and build up an acyclic graph]]></content>
+      <tags>
+        <tag>杂七杂八</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[word2vec]]></title>
     <url>%2F2018%2F11%2F27%2Fword2vec%2F</url>
-    <content type="text"><![CDATA[word2vec 总结 wordmeaning 用dot product计算similartiy distributional similarity 和 distributed 概念区别 distributional similarity 是可以用这个词所搭配的前后文词语来了解这个词的含义 对比的是denotational的对词下定义的方式，也就是字典上解释这个词所用的方式，而上面所说的更像是我们用例句的方式来学习这个词 distributed是与one-hot vector相反的对word的表示方式，是dense vector]]></content>
+    <content type="text"><![CDATA[word2vec 总结 wordmeaning 用dot product计算similartiy distributional similarity 和 distributed 概念区别 distributional similarity 是可以用这个词所搭配的前后文词语来了解这个词的含义 对比的是denotational的对词下定义的方式，也就是字典上解释这个词所用的方式，而上面所说的更像是我们用例句的方式来学习这个词 distributed是与one-hot vector相反的对word的表示方式，是dense vector main idea of word2vec Predict between every word and its context word two algorithm: skip-gram Predict context word given target (position independent) continuous bags of words predict target word from bag-of-words context two (moderately efficient) training methods Hierarchical softmax negative sampling Naive softmax Todo: But the trick is since we have a one hot target which is just predicted the word actually occurred. under this criteria the only thing that left in the cross entropy loss is the negative probablity of the true class. the next class course dot product 是similarity 的一种计算方式 softmax是一种将$R^V$空间的东西映射到概率分布空间的一种方法 1. exponentiate to make positive 2. nomalize to give probablility Softmax 起名字的原因，类似maximize 更大的东西 Q&amp;A: Actually, we have two words representation for the same word, one is when he is the central word, the other is when he is the context word. two vectors for each word Advantages: 1. make the math easier, because two representation are separated when you do the optimization rather than tied to each other 2. in practice emprically works a little bit better 思考： 在这个window里其实不考虑position的影响 intermissiong introduction: sentence embedding 可以用来做情感分析 希望用一个向量表示一个词汇 常用的方法是： use bag-of-words v(‘natural language processing’) = 1/3(v(‘natual’) + v(‘language’) +v(‘processing’)) 还会使用的方法recurrent nerual network, recursive nerual network and covolutional neural network pricenton paper work: simple unsurpervised network weighted bag-of-words and remove some special direction Step 1: 类似average的想法但是down weight to the frequent word p(w)是指这个词的频率，a是常数 $v_s = \frac{1}{|s|}\sum_{w\in s} \frac{a}{a+p(w)}v_w$ Step 2: computer the first principal componet u of {$v_s$} for all the sentence s in S do $v_s = v_s - uu^Tv_s$ Interpretation: given the sentence representation, emiting a single word 的概率是跟这个 word的频率以及与这个词与整个句子表达相近程度来决定的。 $\frac{dx^T}{dx} = I, \frac{dx^TA}{dx}=A, \frac{dAx}{dx}=A^T$ Cosine measure 需要除以两个vector的模，但是在这里面不需要除以因为对于一个vector的模特别大，相应的所有词都会乘上他使得大家都是平等的 stochastic gradient descent nerual network love noise]]></content>
       <categories>
         <category>nlp</category>
       </categories>

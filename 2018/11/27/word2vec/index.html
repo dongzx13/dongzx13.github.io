@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Zexian&#39;s Blog">
 <meta property="og:description" content="word2vec 总结">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-28T04:35:24.616Z">
+<meta property="og:updated_time" content="2018-12-05T09:03:51.952Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="word2vec">
 <meta name="twitter:description" content="word2vec 总结">
@@ -419,7 +419,72 @@
 </li>
 </ol>
 </li>
+<li><p>main idea of word2vec</p>
+<blockquote>
+<p>Predict between every word and its context word</p>
+</blockquote>
+<p>two algorithm:</p>
+<ol>
+<li><p>skip-gram</p>
+<blockquote>
+<p>Predict context word given target (position independent)</p>
+</blockquote>
+</li>
+<li><p>continuous bags of words</p>
+<blockquote>
+<p>predict  target word from bag-of-words context</p>
+</blockquote>
+</li>
 </ol>
+<p>two (moderately efficient) training methods</p>
+<ol>
+<li>Hierarchical softmax</li>
+<li>negative sampling</li>
+</ol>
+<p>Naive softmax</p>
+</li>
+</ol>
+<blockquote>
+<p>Todo: But the trick is since we have a one hot target which is just predicted the word actually occurred. under this criteria the only thing that left in the cross entropy loss is the negative probablity of the true class.   the next class course</p>
+</blockquote>
+<p>dot product 是similarity 的一种计算方式</p>
+<p>softmax是一种将$R^V$空间的东西映射到概率分布空间的一种方法 </p>
+<pre><code>1. exponentiate to make positive
+2. nomalize to give probablility
+</code></pre><p>Softmax 起名字的原因，类似maximize 更大的东西</p>
+<p>Q&amp;A: Actually, we have two words representation for the same word, one is when he is the central word, the other is when he is the context word.  <code>two vectors for each word</code></p>
+<p>Advantages:</p>
+<pre><code>1. make the math easier, because two representation are separated when you do the optimization rather than tied to each other
+2. in practice emprically works a little bit better
+</code></pre><p>思考：</p>
+<p>在这个window里其实不考虑position的影响</p>
+<p>intermissiong introduction:</p>
+<p>sentence embedding 可以用来做情感分析 希望用一个向量表示一个词汇</p>
+<p>常用的方法是： </p>
+<ol>
+<li>use bag-of-words</li>
+</ol>
+<p>v(‘natural language processing’) = 1/3(v(‘natual’)  + v(‘language’) +v(‘processing’))</p>
+<ol start="2">
+<li><p>还会使用的方法recurrent nerual network, recursive nerual network and  covolutional neural network</p>
+</li>
+<li><p>pricenton paper work: simple unsurpervised network</p>
+<p>weighted bag-of-words and remove some special direction </p>
+<ol>
+<li><p>Step 1: 类似average的想法但是down weight to the frequent word <code>p(w)是指这个词的频率，a是常数</code></p>
+<p>$v_s = \frac{1}{|s|}\sum_{w\in s} \frac{a}{a+p(w)}v_w$</p>
+</li>
+<li><p>Step 2: computer the first principal componet u of {$v_s$}</p>
+<p>for all the sentence s in S do</p>
+<p>$v_s = v_s - uu^Tv_s$</p>
+<p>Interpretation: given the sentence representation, emiting a single word 的概率是跟这个 word的频率以及与这个词与整个句子表达相近程度来决定的。</p>
+</li>
+</ol>
+</li>
+</ol>
+<p>$\frac{dx^T}{dx} = I, \frac{dx^TA}{dx}=A, \frac{dAx}{dx}=A^T$</p>
+<p>Cosine measure 需要除以两个vector的模，但是在这里面不需要除以因为对于一个vector的模特别大，相应的所有词都会乘上他使得大家都是平等的</p>
+<p>stochastic gradient descent nerual network love noise</p>
 
       
     </div>
@@ -459,6 +524,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/29/杂七杂八整理/" rel="prev" title="杂七杂八整理">
+                杂七杂八整理 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -546,7 +615,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -568,7 +637,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
