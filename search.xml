@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[1-d peak and 2-d peak]]></title>
+    <url>%2F2019%2F01%2F03%2F1-d-peak-and-2-d-peak%2F</url>
+    <content type="text"><![CDATA[1-d peak leetcode 162. Find Peak Element A peak element is an element that is greater than its neighbors. Given an input array nums, where nums[i] ≠ nums[i+1], find a peak element and return its index. The array may contain multiple peaks, in that case return the index to any one of the peaks is fine. You may imagine that nums[-1] = nums[n] = -∞. Example 1: 123Input: nums = [1,2,3,1]Output: 2Explanation: 3 is a peak element and your function should return the index number 2. O(n)时间复杂度的实现： 12345678910111213141516class Solution(object): def findPeakElement(self, nums): """ :type nums: List[int] :rtype: int """ if len(nums) == 1: return 0 if nums[0] &gt; nums[1]: return 0 i = 1 while i &lt;= len(nums) -1 and nums[i] &gt; nums[i-1] : i = i + 1 return i - 1 O(logn)的循环实现 123456789101112131415class Solution(object): def findPeakElement(self, nums): """ :type nums: List[int] :rtype: int """ start = 0 end = len(nums) - 1 while start &lt; end: mid = (start+end)/2 if nums[mid] &lt; nums[mid + 1]: start = mid + 1 else: end = mid return start 分析： 对于任意一个array都会存在peak 思想就是找到一个数组中间的值，如果这个值比左边的小，那么就可以保证左边一定有peak 如果这个值比右边的小，那么就可以保证右边一定有peak 如果这个值比两边大就说明，他自己就是peak 拓展2-d的peak 对于n行m列的数组 找到一个peak 方法就是 先找到中间的一列m/2 然后找到这一列的最大值 然后判断这个值如果小于左边的列，就对左边的数组进行从第一步开始的操作，如果小于右边的列，就对右边的数组进行相应的操作，如果都大于就可以直接返回了 T(n,m) = T(n,m/2) + O(n) –&gt;找到global maximum T(n,1) = O(n) T(n,m) = logm * O(n) O(nlogm)的实现方法]]></content>
+      <tags>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[bucket_sort]]></title>
+    <url>%2F2019%2F01%2F03%2Fbucket-sort%2F</url>
+    <content type="text"><![CDATA[bucket sort 总结 桶排序适用情况：输入需要排序的数据在一个范围内均匀分布 例如，对0.0到1.0均匀分布的浮点数进行排序 对于上述问题简单的方法是使用对比排序的方法，对于对比排序算法的下界(merge sort[归并排序]，heap sort[堆排序] ，quick-sort[快排])都是O(nlogn)的时间复杂度，也就是说他们不能比O(nlogn)更好 我们可以用线性的时间完成对上述问题进行排序吗？ 计数排序不能在这个问题中使用因为我们用每个参与排序的数值作为数组的index， 但是我们这里参与排序的是浮点数。 我们借用类似计数排序的思想，使用桶排序。 下面是桶排序的算法流程： 12345678910bucket_sort(A)1 n = A.length2 let B[0..n-1] be a new array3 for i = 0 to n-14 make B[i] an empty list5 for i = 1 to n 6 insert A[i] to list B[int(nA[i])]7 for i = 0 to n-18 sort listB[i] with insertion sort9 concatenate this lists B[0]..B[n-1]together in order 时间复杂度： 除了第8行之外，其他各行时间复杂度都是O(n) 分析第8行插入排序的时间复杂度： $$n_i$$代表桶B[i]的元素个数的随机变量 $$ T(n) = \Theta(n) +\sum_{i=0}^{n-1}O(n_i^2) $$ 通过对输入数据取期望，可以计算出期望的运行时间。 $$E[T(n)] = E[ \Theta(n) +\sum_{i=0}^{n-1}O(n_i^2)] =\Theta(n) +\sum_{i=0}^{n-1}O(E[n_i^2]) $$ $$E[n_i^2] = 2 - \frac{1}{n}$$ 证明： 我们定义指示变量：对所有i=0,1…,n-1和j = 1,2,…,n $$X_{ij} = I\{A[j]落入桶i\}$$ $$n_i = \sum_{j=1}^nX_{ij}$$ 所以 $$E[n_i^2] = E[\sum_{j=1}^n\sum_{k=1}^nX_{ij}X_{ik}] = E[\sum_{j=1}^nX_{ij}^2 + \sum_{1\le j\le n}\sum_{1\le k \le n ^{k\neq j }}X_{ij}X_{ik}] = \sum_{j=1}^nE[X_{ij}^2]+ \sum_{1\le j\le n}\sum_{1\le k \le n ^{k\neq j }}E[X_{ij}X_{ik}] $$ $$E[X_{ij}^2] = 1^2 \frac{1}{n} + 0^2 (1-\frac{1}{n}) = \frac{1}{n} $$ 当$k\neq j$的时候，随机变量$X_{ij}X_{ik}$是独立的，因此有$E[X_{ij}X_{ik}] = \frac{1}{n^2}$ $$E[n_i^2] = 1 + n(n-1)\frac{1}{n^2}=2-\frac{1}{n}$$ 所以$$ E[T(n)] = E[ \Theta(n) +\sum_{i=0}^{n-1}O(n_i^2)] =\Theta(n) +\sum_{i=0}^{n-1}O(E[n_i^2]) =\Theta(n) + n*(2-\frac{1}{n}) = \Theta(n) $$ 即使输入数据分布不服从均匀分布，桶排序依然可以在线性时间内完成，只要输入数据满足：所有桶大小的平方和与总的元素数成线性关系 例题： leetcode Top K Frequent Elements 前K个高频元素 将数组长度作为frequency的所有可能来进行桶排序]]></content>
+      <tags>
+        <tag>sort</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[text-classification]]></title>
+    <url>%2F2018%2F12%2F24%2Ftext-classification%2F</url>
+    <content type="text"><![CDATA[text classification ##Extract feature Model: bag of words In this model, a text is represneted as the bag(multiset) of its words, disregarding grammar and even word order but keeping mulitplicity. 也就是说使用词袋模型，不考虑语法，词序，却主要记录词的出现次数。 multiplicity：multiset {a, a, a, b, b, b}, a and b both have multiplicity 3. The list representation does not preserve the order of the words in the original sentences. This is just the main feature of the Bag-of-words model. However, term frequencies are not necessarily the best representation for the text. To address this problem, one of the most popular ways to normalize the term frequencies is to weight a term by the inverse of document frequency, or tf-idf. Tf-idf: term frequency-inverse document frequency numerical statisic that is intended to reflect how important a word is to a document in a. collection or corpus. The tf-idf increses proportionally to the number of times a word appears in the document and is offset by the number of documents in the corpus that contain the word, which helps to adjust fot the fact that some words appear more frequently in general. Conceptually, we can view baf-of-word model as a speica.l case of the n-gram model, with n=1. For n&gt;1 the model is named w-shingling. Hash trickA fast and space-efficient way of vectorizing features. Turn arbitary features into indices in a vector or matrix. It works by applying a hash function to the features and using their hash values as indices directly, rather than lookin the dindices up in an associative array. 对于spam filtering的问题，这个过程的问题在于，随着训练集的增长，这些词典会占用大量的存储空间并且会逐渐增大。相反，如果词汇保持固定而不随着训练集的增加而增加，则对手可能试图发明不在所存储的词汇表中的新单词或拼写错误以绕过机器学习过滤器。 zipf’s lawThe frequency of any word is inversely proportional to its rank in the frequency table. Questions: augmented frequency, to prevent a bias towards longer documents, e.g. raw frequency divided by the raw frequency of the most occurring term in the document:]]></content>
+      <tags>
+        <tag>nlp</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[mac同时使用网线和无线网]]></title>
     <url>%2F2018%2F12%2F10%2Fmac%E5%90%8C%E6%97%B6%E4%BD%BF%E7%94%A8%E7%BD%91%E7%BA%BF%E5%92%8C%E6%97%A0%E7%BA%BF%E7%BD%91%2F</url>
     <content type="text"><![CDATA[12345netstat -rn #查看网关的状态route get 0.0.0.0 #查看连接internet的网关sudo route -n delete default **.**.**.** #删除连接服务器的网关sudo route add -net 0.0.0.0 **.**.**.** #加入连接internet应该使用可以连接internet的网关sudo route add -net 服务器地址 可以连接服务器的网关]]></content>
