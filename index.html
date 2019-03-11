@@ -300,6 +300,166 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/11/Topic-Identification/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zexian Dong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/maxresdefault.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zexian's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/11/Topic-Identification/" itemprop="url">Topic Identification</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-11T16:26:18+08:00">
+                2019-03-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>topic identification </p>
+<p>常规流程</p>
+<ol>
+<li>speech is tokenized into words or phones by asr systems </li>
+<li>standard text-based processing techniques are appplied to the resulting tokenlizations</li>
+<li>Produce a vector representation for each spoken doument, typically a bag-of-wordds multinomial representation or a more compact vector give by probablilistic topic models</li>
+<li>topic id is performed on the spoken document representations by supervised training of classifiers such as bayesian classifiers and svm</li>
+</ol>
+<p>解决的问题：a difficult and realistic scenario where the speech corppus of a test language is annotated only with a minimal number of topic labels, i.e no manual transcriptions or dictionaries for building an asr system are available </p>
+<p>Previous work: the cross-lingual phoneme recoginzers can prodeuc reasonable speech tokenizations </p>
+<p>缺点：the performacne is highlyu dependent on the language and environmental condition(channel and noise) mismatch between the training and the test data</p>
+<p>Paper: topic identification for speech without asr</p>
+<p>Idea: focus on unsupervised approaches that operate directly on the speech of interest</p>
+<ol>
+<li><p>Raw acoustic feature based unsupervised term discovery is one such approach that aims to idnetify and cluster repeating word-like units across speech based around segmental dynamic time warping.</p>
+<p>UTD in 【NLP on spoken  document without ASR】are limited since the acoustic features on which UTD is performed are produced by acoustic models trained from the transcribed speech of its evaluation corpus.</p>
+<p>本文改进：</p>
+<ol>
+<li>UTD operates on language-independent speech representations extracted from multilingual bottleneck networks trained on languages other than the test language</li>
+</ol>
+</li>
+<li><p>Another alternative to producing speech tokenizations without language dependecy is the model-based approach i.e. unsupervised learning of hidden markov model based phoneme0like units from untranscribed speech.</p>
+<p>本文提出：</p>
+<p>the variational bayesian inference变分贝叶斯推断 based acoustic unit discovery(AUD) framework in 【variational inference for acoustic unit descovery】that allows parallelized large-scale training</p>
+</li>
+<li><p>在进行了speech 的tokenlization之后，所有的work are limited to using bag-of-words features as spoken document representations.</p>
+<p>UTD only identifies relatively long repeated terms(0.5 -1 sec)</p>
+<p>AUD/ASR enables full-coverage segmentation of continuous speech into a sequence of units/words and  such a resulting temporal sequence 时间层序 enables another feature learning architecture based on CNN.</p>
+<p>本文提出</p>
+<p>Instead of treating the sequential tokens as a bag of acoustic units or words, the whole token sequence is encoded as concatenated continuous vectors, and followed by convolution and temporal pooling operations  that capture the local and global dependecies.</p>
+<p>such continuous space feature extraction frameworks have been used in various language processing tasks like spoken language processing tasks like spoken language understanding and text classification</p>
+<p>本文三个问题值得探究：</p>
+<ol>
+<li>是否such a cnn-based framework can perform as well on noisy automatically discovered phoneme-like units as on otrhographic正射 words/characters</li>
+<li>pre-trained vectors of phoneme-like units from word2vec 是否provide superior perfomance to random initiallization as evidenced by the word-based tasks</li>
+<li>CNNs 是否 are still competitive in low-resource settings of hundreds to two-thousand training exemplars, rather than large/medium sized datasets</li>
+</ol>
+</li>
+</ol>
+<p>UTD unsurpervised term discovery</p>
+<p>Aim to automatically identify and cluster repeated terms from speech .</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/03/1-d-peak-and-2-d-peak/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1480,148 +1640,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/05/test-time-caffe/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zexian Dong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/maxresdefault.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zexian's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/05/test-time-caffe/" itemprop="url">test_time_caffe</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-05T17:37:59+08:00">
-                2018-09-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/caffe/" itemprop="url" rel="index">
-                    <span itemprop="name">caffe</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Test-time"><a href="#Test-time" class="headerlink" title="Test time"></a>Test time</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env sh</span></span><br><span class="line">now=$(date +<span class="string">"%Y%m%d_%H%M%S"</span>)</span><br><span class="line">log_name=<span class="string">"test___"</span><span class="variable">$now</span><span class="string">""</span></span><br><span class="line">srun -p Test --exclusive --gres=gpu:1 \</span><br><span class="line">	/mnt/lustre/share/sensephoto/caffes/caffe/build/tools/caffe time \</span><br><span class="line">		--model=<span class="variable">$1</span> \</span><br><span class="line">		--iterations=1000 \</span><br><span class="line">        2&gt;&amp;1|tee <span class="variable">$log_name</span>.<span class="built_in">log</span> &amp;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1676,7 +1694,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
