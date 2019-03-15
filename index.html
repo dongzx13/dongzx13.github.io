@@ -370,8 +370,7 @@
 
       
         
-          
-            <p>topic identification </p>
+          <p>topic identification </p>
 <p>常规流程</p>
 <ol>
 <li>speech is tokenized into words or phones by asr systems </li>
@@ -379,41 +378,13 @@
 <li>Produce a vector representation for each spoken doument, typically a bag-of-wordds multinomial representation or a more compact vector give by probablilistic topic models</li>
 <li>topic id is performed on the spoken document representations by supervised training of classifiers such as bayesian classifiers and svm</li>
 </ol>
-<p>解决的问题：a difficult and realistic scenario where the speech corppus of a test language is annotated only with a minimal number of topic labels, i.e no manual transcriptions or dictionaries for building an asr system are available </p>
-<p>Previous work: the cross-lingual phoneme recoginzers can prodeuc reasonable speech tokenizations </p>
-<p>缺点：the performacne is highlyu dependent on the language and environmental condition(channel and noise) mismatch between the training and the test data</p>
-<p>Paper: topic identification for speech without asr</p>
-<p>Idea: focus on unsupervised approaches that operate directly on the speech of interest</p>
-<ol>
-<li><p>Raw acoustic feature based unsupervised term discovery is one such approach that aims to idnetify and cluster repeating word-like units across speech based around segmental dynamic time warping.</p>
-<p>UTD in 【NLP on spoken  document without ASR】are limited since the acoustic features on which UTD is performed are produced by acoustic models trained from the transcribed speech of its evaluation corpus.</p>
-<p>本文改进：</p>
-<ol>
-<li>UTD operates on language-independent speech representations extracted from multilingual bottleneck networks trained on languages other than the test language</li>
-</ol>
-</li>
-<li><p>Another alternative to producing speech tokenizations without language dependecy is the model-based approach i.e. unsupervised learning of hidden markov model based phoneme0like units from untranscribed speech.</p>
-<p>本文提出：</p>
-<p>the variational bayesian inference变分贝叶斯推断 based acoustic unit discovery(AUD) framework in 【variational inference for acoustic unit descovery】that allows parallelized large-scale training</p>
-</li>
-<li><p>在进行了speech 的tokenlization之后，所有的work are limited to using bag-of-words features as spoken document representations.</p>
-<p>UTD only identifies relatively long repeated terms(0.5 -1 sec)</p>
-<p>AUD/ASR enables full-coverage segmentation of continuous speech into a sequence of units/words and  such a resulting temporal sequence 时间层序 enables another feature learning architecture based on CNN.</p>
-<p>本文提出</p>
-<p>Instead of treating the sequential tokens as a bag of acoustic units or words, the whole token sequence is encoded as concatenated continuous vectors, and followed by convolution and temporal pooling operations  that capture the local and global dependecies.</p>
-<p>such continuous space feature extraction frameworks have been used in various language processing tasks like spoken language processing tasks like spoken language understanding and text classification</p>
-<p>本文三个问题值得探究：</p>
-<ol>
-<li>是否such a cnn-based framework can perform as well on noisy automatically discovered phoneme-like units as on otrhographic正射 words/characters</li>
-<li>pre-trained vectors of phoneme-like units from word2vec 是否provide superior perfomance to random initiallization as evidenced by the word-based tasks</li>
-<li>CNNs 是否 are still competitive in low-resource settings of hundreds to two-thousand training exemplars, rather than large/medium sized datasets</li>
-</ol>
-</li>
-</ol>
-<p>UTD unsurpervised term discovery</p>
-<p>Aim to automatically identify and cluster repeated terms from speech .</p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/11/Topic-Identification/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -530,41 +501,19 @@
 
       
         
-          
-            <p>1-d peak</p>
+          <p>1-d peak</p>
 <p>leetcode 162. Find Peak Element</p>
 <p>A peak element is an element that is greater than its neighbors.</p>
 <p>Given an input array <code>nums</code>, where <code>nums[i] ≠ nums[i+1]</code>, find a peak element and return its index.</p>
 <p>The array may contain multiple peaks, in that case return the index to any one of the peaks is fine.</p>
 <p>You may imagine that <code>nums[-1] = nums[n] = -∞</code>.</p>
-<p><strong>Example 1:</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: nums = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>]</span><br><span class="line">Output: <span class="number">2</span></span><br><span class="line">Explanation: <span class="number">3</span> <span class="keyword">is</span> a peak element <span class="keyword">and</span> your function should <span class="keyword">return</span> the index number <span class="number">2.</span></span><br></pre></td></tr></table></figure>
-<p>O(n)时间复杂度的实现：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findPeakElement</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> len(nums) == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> nums[<span class="number">0</span>] &gt; nums[<span class="number">1</span>]:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        i = <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> i &lt;= len(nums) <span class="number">-1</span> <span class="keyword">and</span> nums[i] &gt; nums[i<span class="number">-1</span>] :</span><br><span class="line">            i = i + <span class="number">1</span></span><br><span class="line">             </span><br><span class="line">        <span class="keyword">return</span> i - <span class="number">1</span></span><br></pre></td></tr></table></figure>
-<p>O(logn)的循环实现 </p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findPeakElement</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        start = <span class="number">0</span></span><br><span class="line">        end = len(nums) - <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> start &lt; end:</span><br><span class="line">            mid = (start+end)/<span class="number">2</span></span><br><span class="line">            <span class="keyword">if</span> nums[mid] &lt; nums[mid + <span class="number">1</span>]:</span><br><span class="line">                start = mid + <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                end = mid</span><br><span class="line">        <span class="keyword">return</span> start</span><br></pre></td></tr></table></figure>
-<p>分析：</p>
-<p>对于任意一个array都会存在peak</p>
-<p>思想就是找到一个数组中间的值，如果这个值比左边的小，那么就可以保证左边一定有peak</p>
-<p>如果这个值比右边的小，那么就可以保证右边一定有peak</p>
-<p>如果这个值比两边大就说明，他自己就是peak</p>
-<p>拓展2-d的peak</p>
-<p>对于n行m列的数组 找到一个peak</p>
-<p>方法就是</p>
-<ol>
-<li><p>先找到中间的一列m/2</p>
-</li>
-<li><p>然后找到这一列的最大值</p>
-</li>
-<li><p>然后判断这个值如果小于左边的列，就对左边的数组进行从第一步开始的操作，如果小于右边的列，就对右边的数组进行相应的操作，如果都大于就可以直接返回了</p>
-<p>T(n,m) = T(n,m/2) + O(n) –&gt;找到global maximum</p>
-<p>T(n,1) = O(n)</p>
-<p>T(n,m) = logm * O(n)</p>
-</li>
-</ol>
-<p>O(nlogm)的实现方法</p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/03/1-d-peak-and-2-d-peak/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

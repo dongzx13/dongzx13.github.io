@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Zexian&#39;s Blog">
 <meta property="og:description" content="topic identification  常规流程  speech is tokenized into words or phones by asr systems  standard text-based processing techniques are appplied to the resulting tokenlizations Produce a vector representat">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-11T15:16:07.895Z">
+<meta property="og:updated_time" content="2019-03-15T07:57:50.682Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Topic Identification">
 <meta name="twitter:description" content="topic identification  常规流程  speech is tokenized into words or phones by asr systems  standard text-based processing techniques are appplied to the resulting tokenlizations Produce a vector representat">
@@ -385,6 +385,7 @@
 <li>Produce a vector representation for each spoken doument, typically a bag-of-wordds multinomial representation or a more compact vector give by probablilistic topic models</li>
 <li>topic id is performed on the spoken document representations by supervised training of classifiers such as bayesian classifiers and svm</li>
 </ol>
+<a id="more"></a>
 <p>解决的问题：a difficult and realistic scenario where the speech corppus of a test language is annotated only with a minimal number of topic labels, i.e no manual transcriptions or dictionaries for building an asr system are available </p>
 <p>Previous work: the cross-lingual phoneme recoginzers can prodeuc reasonable speech tokenizations </p>
 <p>缺点：the performacne is highlyu dependent on the language and environmental condition(channel and noise) mismatch between the training and the test data</p>
@@ -418,6 +419,8 @@
 </ol>
 <p>UTD unsurpervised term discovery</p>
 <p>Aim to automatically identify and cluster repeated terms from speech .</p>
+<p>AUD based on variational inference, rather than the maximum likelihood training which may oversimplify the parameter estimations nor the Gibbs Sampling traing which is not amenable负责 to large scale applications</p>
+<p>Phone-loop model is formulated where each phoneme-line</p>
 
       
     </div>
