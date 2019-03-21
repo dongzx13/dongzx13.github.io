@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Speech Processing," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Filter Banks and MFCC Filter BanksIn a nutshell, a signal goes through a pre-emphasis filter; then gets sliced into frames and  a window function is applied to each frame, afterwards, we do a Fourier">
+<meta name="keywords" content="Speech Processing">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Filter Banks and MFCC">
+<meta property="og:url" content="http://yoursite.com/2019/03/15/Filter-Banks-and-MFCC/index.html">
+<meta property="og:site_name" content="Zexian&#39;s Blog">
+<meta property="og:description" content="Filter Banks and MFCC Filter BanksIn a nutshell, a signal goes through a pre-emphasis filter; then gets sliced into frames and  a window function is applied to each frame, afterwards, we do a Fourier">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://haythamfayek.com/assets/posts/post1/time_signal.jpg">
+<meta property="og:image" content="https://haythamfayek.com/assets/posts/post1/emphasized_time_signal.jpg">
+<meta property="og:image" content="https://haythamfayek.com/assets/posts/post1/hamming_window.jpg">
+<meta property="og:image" content="https://haythamfayek.com/assets/posts/post1/mel_filters.jpg">
+<meta property="og:image" content="https://haythamfayek.com/assets/posts/post1/filter_banks_raw.jpg">
+<meta property="og:image" content="https://haythamfayek.com/assets/posts/post1/mfcc_raw.jpg">
+<meta property="og:image" content="https://haythamfayek.com/assets/posts/post1/filter_banks.jpg">
+<meta property="og:image" content="https://haythamfayek.com/assets/posts/post1/mfcc.jpg">
+<meta property="og:updated_time" content="2019-03-15T09:37:17.994Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Filter Banks and MFCC">
+<meta name="twitter:description" content="Filter Banks and MFCC Filter BanksIn a nutshell, a signal goes through a pre-emphasis filter; then gets sliced into frames and  a window function is applied to each frame, afterwards, we do a Fourier">
+<meta name="twitter:image" content="https://haythamfayek.com/assets/posts/post1/time_signal.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '78DI8TV70W',
+      apiKey: 'a13276b28fe2821428a867fbc0637590',
+      indexName: 'dzx07522',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/15/Filter-Banks-and-MFCC/"/>
+
+
+
+
+
+  <title>Filter Banks and MFCC | Zexian's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e89534a89f31a680c764f69e9f9fac89";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zexian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+	    <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/15/Filter-Banks-and-MFCC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zexian Dong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/maxresdefault.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zexian's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Filter Banks and MFCC</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-15T16:02:17+08:00">
+                2019-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/15/Filter-Banks-and-MFCC/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/03/15/Filter-Banks-and-MFCC/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Filter Banks and MFCC</p>
+<h2 id="Filter-Banks"><a href="#Filter-Banks" class="headerlink" title="Filter Banks"></a>Filter Banks</h2><p>In a nutshell, a signal goes through a pre-emphasis filter; then gets sliced into frames and  a window function is applied to each frame, afterwards, we do a Fourier transform on each frame(or more specifically a Short-Time Fourier Transform) and caculate the power spectrum, and subsequently compute the filter banks. </p>
+<h2 id="MFCC"><a href="#MFCC" class="headerlink" title="MFCC"></a>MFCC</h2><p>To obtain MFCCs, a Discrete Cosine Transform is applied to the filter banks retaining a number of the resulting coefficients while the rest are discarded.</p>
+<h2 id="A-final-step-in-both-cases-is-mean-normalization"><a href="#A-final-step-in-both-cases-is-mean-normalization" class="headerlink" title="A final step in both cases, is mean normalization."></a>A final step in both cases, is mean normalization.</h2><h3 id="原始语音"><a href="#原始语音" class="headerlink" title="原始语音"></a>原始语音</h3><p><img src="https://haythamfayek.com/assets/posts/post1/time_signal.jpg" alt="Signal in the Time Domain"></p>
+<h3 id="pre-emphasis"><a href="#pre-emphasis" class="headerlink" title="pre-emphasis"></a>pre-emphasis</h3><p>In order to amplify the high frequencies.</p>
+<ol>
+<li>balance the frequency spectrum since high frequencies usually have smaller magnitudes compared to lower frequencies</li>
+<li><code>Avoid numerical problems during the  Fourier transfrom operation</code></li>
+<li>improve the signal-to-noise ratio</li>
+</ol>
+<p>2是pre-emphasis最modest的effect，1和3可以通过mean normalization 实现。</p>
+<p>实现方法：</p>
+<p>$$y(t) = x(t) - \alpha x(t-1)​$$</p>
+<p>which can be easily implemented using the following line, where typical values for the filter coefficient ($\alpha$) are 0.95 or 0.97, <code>pre_emphasis = 0.97</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">emphasized_signal = numpy.append(signal[<span class="number">0</span>], signal[<span class="number">1</span>:] - pre_emphasis * signal[:<span class="number">-1</span>])</span><br></pre></td></tr></table></figure>
+<h3 id="经过pre-emphasis的语音"><a href="#经过pre-emphasis的语音" class="headerlink" title="经过pre-emphasis的语音"></a>经过pre-emphasis的语音</h3><p><img src="https://haythamfayek.com/assets/posts/post1/emphasized_time_signal.jpg" alt="Signal in Time Domain"></p>
+<h3 id="framing"><a href="#framing" class="headerlink" title="framing"></a>framing</h3><p>By doing a Fourier transform over this short-time frame, we can obtain a good approximation of the frequency contours of the signal by concatenating adjacent frames.</p>
+<p>Typical frame sizes in speech processing range from 20ms to 40ms with 50% overlap between consecutive frames. Popular settings are 25ms for the frame size, and a 10ms stride(15ms overlap).</p>
+<h3 id="window"><a href="#window" class="headerlink" title="window"></a>window</h3><p>After slicking the signal into frames, we apply a window function such as Hamming window to each frame. A Hamming window has the following form:</p>
+<p>$w[n] = 0.54 − 0.46 cos ( \frac{2πn}{N − 1} )$</p>
+<p>where,$ 0≤n≤N−1$, $N$ is the window length. Plotting the previous equation yields the following plot:</p>
+<p><img src="https://haythamfayek.com/assets/posts/post1/hamming_window.jpg" alt="Hamming Window"></p>
+<p>There are several reasons why we need to apply a window function to the frames, notably to counteract the ssumption made by the FFT  that the data is infinite and to reduce spectral leakage. </p>
+<p><code>FFT算法只是对有限长度信号进行变换，有限长度信号相当于无限长信号和矩形窗的乘积，也就是讲这个无限长信号截短，对应频域的傅立叶变换是实际信号傅立叶变换与矩形窗傅立叶变换的卷积，当信号为截距后的频谱不同于它以前的频谱，例如，对于频率为fs的正弦序列，它的频谱应该只有在fs处有离散谱，但是在对它的频谱做了截短后，结果使信号的频谱不只在fs处有离散铺，而是在以fs为中心的频带范围内都有谱线出现，他们可以理解为从fs频率上泄漏出去的，这就是频谱泄漏</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frames *= numpy.hamming(frame_length)</span><br></pre></td></tr></table></figure>
+<h3 id="fourier-transform-and-power-spectrum"><a href="#fourier-transform-and-power-spectrum" class="headerlink" title="fourier-transform and power spectrum"></a>fourier-transform and power spectrum</h3><p>We can now do an N-point FFT on each frame to calculate the frequency spectrum, which is also called Short-Time Fourier-Transform (STFT), where NN is typically 256 or 512, <code>NFFT = 512</code>; and then compute the power spectrum (periodogram) using the following equation:</p>
+<p>$P = \frac{|FFT(x_i)|^2}{N}$</p>
+<p>where, $x_i$ is the $i^{th}$ frame of signal $x$. This could be implemented with the following lines:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mag_frames = numpy.absolute(numpy.fft.rfft(frames, NFFT))  <span class="comment"># Magnitude of the FFT</span></span><br><span class="line">pow_frames = ((<span class="number">1.0</span> / NFFT) * ((mag_frames) ** <span class="number">2</span>))  <span class="comment"># Power Spectrum</span></span><br></pre></td></tr></table></figure>
+<h3 id="filter-banks"><a href="#filter-banks" class="headerlink" title="filter banks"></a>filter banks</h3><p>Final step: applying triangular filters, typically 40 filters, nfilt=40 on a Mel-scale to the power spectrum to extract frequency bands. The Mel-scale aims to mimic the non-linear human ear perception of sound, by being more discriminative at lower frequencies and less discriminative at higher frequencies.We can convert between Hertz (ff) and Mel (mm) using the following equations:</p>
+<p>$m = 2595 \log_{10} (1 + \frac{f}{700})$</p>
+<p>$f = 700 (10^{m/2595} - 1)$</p>
+<p><img src="https://haythamfayek.com/assets/posts/post1/mel_filters.jpg" alt="Mel-Scaled Filters"></p>
+<p><img src="https://haythamfayek.com/assets/posts/post1/filter_banks_raw.jpg" alt="Unnormalized Filter Banks"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">low_freq_mel = <span class="number">0</span></span><br><span class="line">high_freq_mel = (<span class="number">2595</span> * numpy.log10(<span class="number">1</span> + (sample_rate / <span class="number">2</span>) / <span class="number">700</span>))  <span class="comment"># Convert Hz to Mel</span></span><br><span class="line">mel_points = numpy.linspace(low_freq_mel, high_freq_mel, nfilt + <span class="number">2</span>)  <span class="comment"># Equally spaced in Mel scale</span></span><br><span class="line">hz_points = (<span class="number">700</span> * (<span class="number">10</span>**(mel_points / <span class="number">2595</span>) - <span class="number">1</span>))  <span class="comment"># Convert Mel to Hz</span></span><br><span class="line">bin = numpy.floor((NFFT + <span class="number">1</span>) * hz_points / sample_rate)</span><br><span class="line"></span><br><span class="line">fbank = numpy.zeros((nfilt, int(numpy.floor(NFFT / <span class="number">2</span> + <span class="number">1</span>))))</span><br><span class="line"><span class="keyword">for</span> m <span class="keyword">in</span> range(<span class="number">1</span>, nfilt + <span class="number">1</span>):</span><br><span class="line">    f_m_minus = int(bin[m - <span class="number">1</span>])   <span class="comment"># left</span></span><br><span class="line">    f_m = int(bin[m])             <span class="comment"># center</span></span><br><span class="line">    f_m_plus = int(bin[m + <span class="number">1</span>])    <span class="comment"># right</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(f_m_minus, f_m):</span><br><span class="line">        fbank[m - <span class="number">1</span>, k] = (k - bin[m - <span class="number">1</span>]) / (bin[m] - bin[m - <span class="number">1</span>])</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(f_m, f_m_plus):</span><br><span class="line">        fbank[m - <span class="number">1</span>, k] = (bin[m + <span class="number">1</span>] - k) / (bin[m + <span class="number">1</span>] - bin[m])</span><br><span class="line">filter_banks = numpy.dot(pow_frames, fbank.T)</span><br><span class="line">filter_banks = numpy.where(filter_banks == <span class="number">0</span>, numpy.finfo(float).eps, filter_banks)  <span class="comment"># Numerical Stability</span></span><br><span class="line">filter_banks = <span class="number">20</span> * numpy.log10(filter_banks)  <span class="comment"># dB</span></span><br></pre></td></tr></table></figure>
+<h3 id="MFCC-1"><a href="#MFCC-1" class="headerlink" title="MFCC"></a>MFCC</h3><p>It turns out that filter bank coefficients computed in the previous step are highly correlated, which could be problematic in some machine learning algorithms. Therefore, we can apply Discrete Cosine Transform (DCT) to decorrelate the filter bank coefficients and yield a compressed representation of the filter banks. Typically, for Automatic Speech Recognition (ASR), the resulting cepstral coefficients 2-13 are retained and the rest are discarded; <code>num_ceps = 12</code>. The <a href="http://practicalcryptography.com/miscellaneous/machine-learning/guide-mel-frequency-cepstral-coefficients-mfccs/" target="_blank" rel="noopener">reasons for discarding the other coefficients</a> is that they represent fast changes in the filter bank coefficients and these fine details don’t contribute to Automatic Speech Recognition (ASR).</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mfcc = dct(filter_banks, type=<span class="number">2</span>, axis=<span class="number">1</span>, norm=<span class="string">'ortho'</span>)[:, <span class="number">1</span> : (num_ceps + <span class="number">1</span>)] <span class="comment"># Keep 2-13</span></span><br></pre></td></tr></table></figure>
+<p>One may apply sinusoidal liftering<a href="https://haythamfayek.com/2016/04/21/speech-processing-for-machine-learning.html#fn:1" target="_blank" rel="noopener">1</a> to the MFCCs to de-emphasize higher MFCCs which has been claimed to improve speech recognition in noisy signals.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(nframes, ncoeff) = mfcc.shape</span><br><span class="line">n = numpy.arange(ncoeff)</span><br><span class="line">lift = <span class="number">1</span> + (cep_lifter / <span class="number">2</span>) * numpy.sin(numpy.pi * n / cep_lifter)</span><br><span class="line">mfcc *= lift  <span class="comment">#*</span></span><br></pre></td></tr></table></figure>
+<p>The resulting MFCCs:</p>
+<p><img src="https://haythamfayek.com/assets/posts/post1/mfcc_raw.jpg" alt="Unnormalized MFCCs"><em>MFCCs</em></p>
+<h3 id="Mean-Normalization"><a href="#Mean-Normalization" class="headerlink" title="Mean Normalization"></a>Mean Normalization</h3><p>As previously mentioned, to balance the spectrum and improve the Signal-to-Noise (SNR), we can simply subtract the mean of each coefficient from all frames.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filter_banks -= (numpy.mean(filter_banks, axis=0) + 1e-8)</span><br></pre></td></tr></table></figure>
+<p>The mean-normalized filter banks:</p>
+<p><img src="https://haythamfayek.com/assets/posts/post1/filter_banks.jpg" alt="Normalized Filter Banks"><em>Normalized Filter Banks</em></p>
+<p>and similarly for MFCCs:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mfcc -= (numpy.mean(mfcc, axis=0) + 1e-8)</span><br></pre></td></tr></table></figure>
+<p>The mean-normalized MFCCs:</p>
+<p><img src="https://haythamfayek.com/assets/posts/post1/mfcc.jpg" alt="Normalized MFCCs"><em>Normalized MFCCs</em></p>
+<h3 id="Filter-Banks-vs-MFCCs"><a href="#Filter-Banks-vs-MFCCs" class="headerlink" title="Filter Banks vs MFCCs"></a>Filter Banks vs MFCCs</h3><p>To this point, the steps to compute filter banks and MFCCs were discussed in terms of their motivations and implementations. It is interesting to note that all steps needed to compute filter banks were motivated by the nature of the speech signal and the human perception of such signals. On the contrary, the extra steps needed to compute MFCCs were motivated by the limitation of some machine learning algorithms. The Discrete Cosine Transform (DCT) was needed to decorrelate filter bank coefficients, a process also referred to as whitening. In particular, MFCCs were very popular when Gaussian Mixture Models - Hidden Markov Models (GMMs-HMMs) were very popular and together, MFCCs and GMMs-HMMs co-evolved to be the standard way of doing Automatic Speech Recognition (ASR)<a href="https://haythamfayek.com/2016/04/21/speech-processing-for-machine-learning.html#fn:2" target="_blank" rel="noopener">2</a>. With the advent of Deep Learning in speech systems, one might question if MFCCs are still the right choice given that deep neural networks are less susceptible to highly correlated input and therefore the Discrete Cosine Transform (DCT) is no longer a necessary step. It is beneficial to note that Discrete Cosine Transform (DCT) is a linear transformation, and therefore undesirable as it discards some information in speech signals which are highly non-linear.</p>
+<p>It is sensible to question if the Fourier Transform is a necessary operation. Given that the Fourier Transform itself is also a linear operation, it might be beneficial to ignore it and attempt to learn directly from the signal in the time domain. Indeed, some recent work has already attempted this and positive results were reported. However, the Fourier transform operation is a difficult operation to learn and may arguably increase the amount of data and model complexity needed to achieve the same performance. Moreover, in doing Short-Time Fourier Transform (STFT), we’ve assumed the signal to be stationary within this short time and therefore the linearity of the Fourier transform would not pose a critical problem.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>In this post, we’ve explored the procedure to compute Mel-scaled filter banks and Mel-Frequency Cepstrum Coefficients (MFCCs). The motivations and implementation of each step in the procedure were discussed. We’ve also argued the reasons behind the increasing popularity of filter banks compared to MFCCs.</p>
+<p><strong>tl;dr</strong>: Use Mel-scaled filter banks if the machine learning algorithm is not susceptible to highly correlated input. Use MFCCs if the machine learning algorithm is susceptible to correlated input.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Speech-Processing/" rel="tag"># Speech Processing</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/11/Topic-Identification/" rel="next" title="Topic Identification">
+                <i class="fa fa-chevron-left"></i> Topic Identification
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/maxresdefault.jpg"
+                alt="Zexian Dong" />
+            
+              <p class="site-author-name" itemprop="name">Zexian Dong</p>
+              <p class="site-description motion-element" itemprop="description">I can do all things!</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/dongzx13" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:dzx07522@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Filter-Banks"><span class="nav-number">1.</span> <span class="nav-text">Filter Banks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MFCC"><span class="nav-number">2.</span> <span class="nav-text">MFCC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-final-step-in-both-cases-is-mean-normalization"><span class="nav-number">3.</span> <span class="nav-text">A final step in both cases, is mean normalization.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原始语音"><span class="nav-number">3.1.</span> <span class="nav-text">原始语音</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pre-emphasis"><span class="nav-number">3.2.</span> <span class="nav-text">pre-emphasis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#经过pre-emphasis的语音"><span class="nav-number">3.3.</span> <span class="nav-text">经过pre-emphasis的语音</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#framing"><span class="nav-number">3.4.</span> <span class="nav-text">framing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#window"><span class="nav-number">3.5.</span> <span class="nav-text">window</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fourier-transform-and-power-spectrum"><span class="nav-number">3.6.</span> <span class="nav-text">fourier-transform and power spectrum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#filter-banks"><span class="nav-number">3.7.</span> <span class="nav-text">filter banks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MFCC-1"><span class="nav-number">3.8.</span> <span class="nav-text">MFCC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mean-Normalization"><span class="nav-number">3.9.</span> <span class="nav-text">Mean Normalization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Filter-Banks-vs-MFCCs"><span class="nav-number">3.10.</span> <span class="nav-text">Filter Banks vs MFCCs</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-number">4.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zexian Dong</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'dongzx13',
+            repo: 'gitment-comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '6f54836e7a6de5628a4763894379fce5e4f036f6',
+            
+                client_id: '8eeb5a382fa5cf12fbd6'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
